@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th = "http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec = "http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <link rel="stylesheet" type="text/css" th:href="@{'/css/bootstrap.css'}">
+    <script type="text/javascript" th:src="@{'/js/bootstrap.bundle.js'}"></script>
+</head>
+<body style="background-color: #bfd1ec">
+<div th:insert="~{header.html}">
+</div>
+<div class="container mt-3" style = "min-height: 800px;">
+    <div class="row">
+        <div layout:fragment="main-content">
+        </div>
+    </div>
+</div>
+</body>
+</html>
