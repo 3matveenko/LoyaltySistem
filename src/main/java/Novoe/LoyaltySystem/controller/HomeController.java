@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HomeController {
-
+//
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/")
     public String index(){
