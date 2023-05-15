@@ -16,7 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public UserService userService(){
+    public UserService securityUserService(){
         return new UserService();
     }
 
@@ -31,20 +31,20 @@ public class SecurityConfig {
                 http.getSharedObject(AuthenticationManagerBuilder.class);
 
         authenticationManagerBuilder
-                .userDetailsService(userService())
+                .userDetailsService(securityUserService())
                 .passwordEncoder(passwordEncoder());
 
         http.formLogin()
                 .loginPage("/login")
-                .failureUrl("/signin?error")
-                .defaultSuccessUrl("/index")
+                .failureUrl("/login?error")
+                .defaultSuccessUrl("/starter")
                 .loginProcessingUrl("/enter")
                 .usernameParameter("user_login")
                 .passwordParameter("user_password");
 
         http.logout()
                 .logoutUrl("/exit")
-                .logoutSuccessUrl("/signin");
+                .logoutSuccessUrl("/loginC");
 
         return http.build();
     }
