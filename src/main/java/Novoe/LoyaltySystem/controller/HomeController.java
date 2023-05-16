@@ -23,10 +23,6 @@ public class HomeController {
         model.addAttribute("count", companyService.getCount());
         return "index";
     }
-
-
-
-
     @GetMapping(value = "/login")
     public String login(){
         return "login";
@@ -36,5 +32,8 @@ public class HomeController {
     public String adminpanel(){
         return "adminpanel";
     }
+
+
 }
+
 
