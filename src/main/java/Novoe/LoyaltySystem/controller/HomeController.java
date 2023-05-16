@@ -12,10 +12,7 @@ public class HomeController {
 
     @Autowired
     CompanyService companyService;
-    @GetMapping(value = "/starter")
-    public String starter(){
-        return "starter";
-    }
+
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/")
@@ -28,10 +25,6 @@ public class HomeController {
         return "login";
     }
 
-    @GetMapping(value = "/admin")
-    public String adminpanel(){
-        return "adminpanel";
-    }
 
 
 }

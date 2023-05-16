@@ -37,14 +37,14 @@ public class SecurityConfig {
         http.formLogin()
                 .loginPage("/login")
                 .failureUrl("/login?error")
-                .defaultSuccessUrl("/starter")
+                .defaultSuccessUrl("/")
                 .loginProcessingUrl("/enter")
                 .usernameParameter("user_login")
                 .passwordParameter("user_password");
 
         http.logout()
                 .logoutUrl("/exit")
-                .logoutSuccessUrl("/loginC");
+                .logoutSuccessUrl("/login");
 
         return http.build();
     }
