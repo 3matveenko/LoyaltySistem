@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/main.html">
+<div layout:fragment="main-content">
+  это проспотр карточек а не обновление
+  <div class="card card-primary">
+    <div class="card-header">
+      <h3 class="card-title">Создать новую компанию</h3>
+    </div>
+    <form th:action="@{'/company/create'}" method="post" >
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <input type="hidden"  th:value="${company.getId()}"  name="id" class="form-control">
+              <label for="exampleInputname">Название</label>
+              <input th:value="${company.getCompanyName()}"  name="companyName" type="text" class="form-control" id="exampleInputname" placeholder="">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputmanager">Ф.И.О. руководителя</label>
+              <input th:value="${company.getManagerName()}" name="managerName" type="text" class="form-control" id="exampleInputmanager" placeholder="">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="exampleInputaddress">Адрес</label>
+              <input th:value="${company.getAddress()}" name="address" type="text" class="form-control" id="exampleInputaddress" placeholder="">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputphone">Номер телефона</label>
+              <input th:value="${company.getPhoneNumber()}" name="phoneNumber" type="text" class="form-control" id="exampleInputphone" placeholder="">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="exampleInputbin">Бин</label>
+              <input th:value="${company.getBin()}" name="bin" type="text" class="form-control" id="exampleInputbin" placeholder="">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button type="submit" class="btn btn-primary">Ввод</button>
+      </div>
+    </form>
+  </div>
+
+</html>

@@ -10,4 +10,5 @@ import org.springframework.transaction.annotation.Transactional;
 public interface CompanyRepository extends JpaRepository<Company, Long> {
     @Override
     long count();
+
 }

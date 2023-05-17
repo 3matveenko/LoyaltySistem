@@ -20,4 +20,16 @@ public class CompanyService {
     public List<Company> allCompany(){
     return companyRepository.findAll();
     }
+
+    public void create(Company company){
+        companyRepository.save(company);
+    }
+
+    public void delete(Long id){
+        companyRepository.delete(companyRepository.findById(id).orElseThrow());
+    }
+
+    public Company findById(Long id){
+       return companyRepository.findById(id).orElseThrow();
+    }
 }
