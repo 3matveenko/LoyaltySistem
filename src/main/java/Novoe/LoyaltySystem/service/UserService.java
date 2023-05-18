@@ -26,7 +26,6 @@ public class UserService implements UserDetailsService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
     @Autowired
     private PermissionRepository permissionRepository;
 
@@ -87,6 +86,12 @@ public class UserService implements UserDetailsService {
             }
         }
         return result;
+    }
+    public long getCount(){
+        return userRepository.count();
+    }
 
+    public List<User> allUsers(){
+       return userRepository.findAll();
     }
 }

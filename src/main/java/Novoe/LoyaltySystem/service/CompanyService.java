@@ -1,5 +1,6 @@
 package Novoe.LoyaltySystem.service;
 
+import Novoe.LoyaltySystem.model.Card;
 import Novoe.LoyaltySystem.model.Company;
 import Novoe.LoyaltySystem.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +32,10 @@ public class CompanyService {
 
     public Company findById(Long id){
        return companyRepository.findById(id).orElseThrow();
+    }
+
+    public List<Card> CardToCompany(Long id){
+        Company company = companyRepository.findById(id).orElseThrow();
+        return company.getCards();
     }
 }

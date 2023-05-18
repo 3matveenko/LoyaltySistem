@@ -1,10 +1,10 @@
 package Novoe.LoyaltySystem.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,7 +27,10 @@ public class Company extends BaseEntity{
     @Column(name = "bin")
     private String bin;
 
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<User> users;
 
-
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Card> cards;
 
 }

@@ -1,6 +1,7 @@
 package Novoe.LoyaltySystem.controller;
 
 import Novoe.LoyaltySystem.model.Company;
+import Novoe.LoyaltySystem.service.CardService;
 import Novoe.LoyaltySystem.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,8 +14,12 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/company")
 public class CompanyController {
 
-@Autowired
+    @Autowired
     CompanyService companyService;
+
+    @Autowired
+    CardService cardService;
+
     @GetMapping(value = "/")
     public String allCompany(Model model){
     model.addAttribute("companies", companyService.allCompany());
@@ -41,6 +46,8 @@ public class CompanyController {
     @GetMapping(value = "/details/{companyId}")
     public String detailsCompany(Model model,
             @PathVariable("companyId") Long companyId){
+        model.addAttribute("cardtocompany", companyService.CardToCompany(companyId));
+        model.addAttribute("countCard", cardService.getCount(companyId));
         model.addAttribute("company", companyService.findById(companyId));
         return "/company/details";
     }

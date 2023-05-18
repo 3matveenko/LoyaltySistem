@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/main.html">
+<div layout:fragment="main-content">
+  <div class="card card-primary">
+    <div class="card-header">
+      <h3 class="card-title">Создать новую карточку</h3>
+    </div>
+    <form th:action="@{'/card/create'}" method="post" >
+      <div class="card-body">
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="exampleInputname">Имя</label>
+              <input  name="name" type="text" class="form-control" id="exampleInputname" placeholder="">
+            </div>
+            <div class="form-group">
+загрузить картинку
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="exampleInputaddress">Формула рассчета</label>
+              <input name="typeOfDiscount" type="text" class="form-control" id="exampleInputaddress" placeholder="">
+            </div>
+          </div>
+          <div class="col">
+
+        </div>
+      </div>
+      <div class="card-footer">
+        <button type="submit" class="btn btn-primary">Создать</button>
+      </div>
+    </form>
+  </div>
+
+</html>

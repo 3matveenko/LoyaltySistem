@@ -7,13 +7,13 @@
         <div class="card-header">
             <h3 class="card-title">
                 <i class="fas fa-edit"></i>
-                Управление компаниями
+                Управление пользователями
             </h3>
         </div>
         <div class="card-body">
             <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
                 <li class="nav-item">
-                    <a class="nav-link active" id="custom-content-below-home-tab" data-toggle="pill" href="#custom-content-below-home" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Список созданных компаний</a>
+                    <a class="nav-link active" id="custom-content-below-home-tab" data-toggle="pill" href="#custom-content-below-home" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Список пользователей</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="custom-content-below-profile-tab" data-toggle="pill" href="#custom-content-below-profile" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Test</a>
@@ -31,35 +31,23 @@
                         <thead>
                         <tr>
                             <td>№</td>
-                            <td>Название</td>
-                            <td>Адрес</td>
-                            <td>ФИО руководителя</td>
-                            <td>Номер Телефона</td>
-                            <td>БИН</td>
+                            <td>Имя пользователя</td>
+                            <td>Email</td>
+                            <td>Компания</td>
                         </tr>
                         </thead>
-                        <tbody th:each="company : ${companies}" >
-                            <tr>
-                                <td th:onclick="'redirectToCompanyDetails(\'' + ${company.id} + '\')'" style="cursor: pointer;"
-                                    th:text="${company.id}"></td>
-                                <td th:onclick="'redirectToCompanyDetails(\'' + ${company.id} + '\')'" style="cursor: pointer;"
-                                    th:text="${company.companyName}"></td>
-                                <td th:onclick="'redirectToCompanyDetails(\'' + ${company.id} + '\')'" style="cursor: pointer;"
-                                    th:text="${company.address}"></td>
-                                <td th:onclick="'redirectToCompanyDetails(\'' + ${company.id} + '\')'" style="cursor: pointer;"
-                                    th:text="${company.managerName}"></td>
-                                <td th:onclick="'redirectToCompanyDetails(\'' + ${company.id} + '\')'" style="cursor: pointer;"
-                                    th:text="${company.phoneNumber}"></td>
-                                <td th:onclick="'redirectToCompanyDetails(\'' + ${company.id} + '\')'" style="cursor: pointer;"
-                                    th:text="${company.bin}"></td>
-                            <td><a th:href="'/company/update/' + ${company.id}" class="btn btn-transparent btn-outline-none">
-                                <img src="/dist/img/edit.png" width="30" height="30"></a></td>
+                        <tbody th:each="user : ${users}" >
+                        <tr>
+                            <td th:text="${user.id}"></td>
+                            <td th:text="${user.username}"></td>
+                            <td>почта</td>
+                            <td>компания</td>
+                            <td><a th:href="'/company/update/' + ${user.id}" class="btn btn-transparent btn-outline-none"><img src="/dist/img/edit.png" width="30" height="30"></a></td>
                             <td><button type="button" class="btn btn-transparent btn-outline-none" data-toggle="modal"
-                                        th:data-target="'#exampleModal' + ${company.id}">
-                                <img src="/dist/img/delete.png" width="30" height="30"></button></td>
+                                        th:data-target="'#exampleModal' + ${user.id}"><img src="/dist/img/delete.png" width="30" height="30"></button></td>
 
                             <!-- Modal -->
-                            <div class="modal fade" th:id="'exampleModal' + ${company.id}">
+                            <div class="modal fade" th:id="'exampleModal' + ${user.id}">
                                 <div class="modal-dialog">
                                     <div class="modal-content bg-danger">
                                         <div class="modal-header">
@@ -68,12 +56,12 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <h3 class="text-center">Вы уверены, что хотите удалить компанию "
-                                                <span th:text="${company.companyName}"></span>"?</h3>
+                                            <h3 class="text-center">Вы уверены, что хотите удалить пользователя "
+                                                <span th:text="${user.username}"></span>"?</h3>
                                         </div>
                                         <div class="modal-footer justify-content-between">
                                             <button type="button" class="btn btn-outline-light" data-dismiss="modal">Нет</button>
-                                            <a th:href="'/company/delete/' + ${company.id}" class="btn btn-outline-light">Да, удалить</a>
+                                            <a th:href="'/company/delete/' + ${user.id}" class="btn btn-outline-light">Да, удалить</a>
                                         </div>
                                     </div>
                                     <!-- /.modal-content -->
@@ -113,7 +101,7 @@
             </div>
             <div class="tab-custom-content">
                 <form th:action="@{'/company/create'}" method="get" >
-                <p class="lead mb-0"><button class="btn btn-outline-primary">создать новую компанию</button></p>
+                    <p class="lead mb-0"><button class="btn btn-outline-primary">создать новую компанию</button></p>
                 </form>
             </div>
         </div>

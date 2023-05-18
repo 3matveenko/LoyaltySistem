@@ -1,6 +1,7 @@
 package Novoe.LoyaltySystem.controller;
 
 import Novoe.LoyaltySystem.service.CompanyService;
+import Novoe.LoyaltySystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -13,11 +14,15 @@ public class HomeController {
     @Autowired
     CompanyService companyService;
 
+    @Autowired
+    UserService userService;
+
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/")
     public String index(Model model){
-        model.addAttribute("count", companyService.getCount());
+        model.addAttribute("countCompany", companyService.getCount());
+        model.addAttribute("coutnUser", userService.getCount());
         return "index";
     }
     @GetMapping(value = "/login")

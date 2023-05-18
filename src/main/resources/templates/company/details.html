@@ -11,47 +11,71 @@
 <html lang="en"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/main.html">
 <div layout:fragment="main-content">
-  это проспотр карточек а не обновление
   <div class="card card-primary">
     <div class="card-header">
-      <h3 class="card-title">Создать новую компанию</h3>
+      <h3 class="card-title">Информация о компании</h3>
     </div>
-    <form th:action="@{'/company/create'}" method="post" >
       <div class="card-body">
         <div class="row">
           <div class="col">
             <div class="form-group">
               <input type="hidden"  th:value="${company.getId()}"  name="id" class="form-control">
-              <label for="exampleInputname">Название</label>
-              <input th:value="${company.getCompanyName()}"  name="companyName" type="text" class="form-control" id="exampleInputname" placeholder="">
+              <label>Название</label>
+              <h4 th:text="${company.getCompanyName()}"></h4>
             </div>
-            <div class="form-group">
-              <label for="exampleInputmanager">Ф.И.О. руководителя</label>
-              <input th:value="${company.getManagerName()}" name="managerName" type="text" class="form-control" id="exampleInputmanager" placeholder="">
-            </div>
-          </div>
-          <div class="col">
-            <div class="form-group">
-              <label for="exampleInputaddress">Адрес</label>
-              <input th:value="${company.getAddress()}" name="address" type="text" class="form-control" id="exampleInputaddress" placeholder="">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputphone">Номер телефона</label>
-              <input th:value="${company.getPhoneNumber()}" name="phoneNumber" type="text" class="form-control" id="exampleInputphone" placeholder="">
+            <div class="form-group" >
+              <label>Ф.И.О. руководителя</label>
+              <h4 th:text="${company.getManagerName()}"> </h4>
             </div>
           </div>
           <div class="col">
             <div class="form-group">
-              <label for="exampleInputbin">Бин</label>
-              <input th:value="${company.getBin()}" name="bin" type="text" class="form-control" id="exampleInputbin" placeholder="">
+              <label>Адрес</label>
+              <h4 th:text="${company.getAddress()}"></h4>
+            </div>
+            <div class="form-group">
+              <label>Номер телефона</label>
+              <h4 th:text="${company.getPhoneNumber()}"></h4>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label>БИН</label>
+              <h4 th:text="${company.getBin()}"></h4>
             </div>
           </div>
         </div>
       </div>
-      <div class="card-footer">
-        <button type="submit" class="btn btn-primary">Ввод</button>
+    <div class="card card-primary">
+      <div class="card-header d-flex justify-content-between">
+        <h3 class="card-title">Карточки компании</h3>
+        <div class="ml-auto"><a href="/card/create">Создать новую карточку</a> </div>
       </div>
-    </form>
+
+      <div class="card-body">
+    <h2 class="text-center"></h2>
+    <th:block th:if="${countCard == 0}">
+      <label style="margin-left: 3rem"> У компании нет карточек</label>
+    </th:block>
+        <div class="row justify-content-between">
+          <div class="col-md-4 mb-3" th:each="card : ${cardtocompany}">
+            <div style="margin-left: 4rem; width: 306px; height: 240px" class="card">
+              <img class="card-img-top img-fluid" th:src="${card.image}" width="306" height="188">
+              <div class="card-body">
+                <div th:text="${card.name}"></div>
+              </div>
+            </div>
+          </div>
+      </div>
+
+
+    <div >
+    </div>
+      <form th:action="@{'/company/create'}" method="post">
+        <div class="card-footer">
+          <button type="submit" class="btn btn-primary">пока не нужна</button>
+        </div>
+      </form>
   </div>
 
 </html>
