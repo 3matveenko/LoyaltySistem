@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/main.html">
+<div layout:fragment="main-content">
+  <div class="card-header">
+    <h3 class="card-title">Создать новую карточку</h3>
+  </div>
+  <div class="card-body">
+    <form th:action="@{'/card/add'}" method="post" enctype="multipart/form-data">
+      <input type="hidden" th:value="${id}" name="id_company">
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="exampleInputname">Имя</label>
+            <input  name="name" type="text" class="form-control" id="exampleInputname" placeholder="">
+          </div>
+          <div class="form-group">
+            <label for="exampleInputFile">Загрузить картинку</label>
+            <div class="input-group">
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="exampleInputFile" name="file" accept="image/jpeg" onchange="showPreview(event)">
+                <label class="custom-file-label" for="exampleInputFile">Формат изображения 860*540 (.jpeg / .jpg)</label>
+              </div>
+            </div>
+          </div>
+          <div id="imagePreview">
+            <img src="путь_к_изображению_по_умолчанию" alt="Изображение по умолчанию">
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="exampleInputaddress">Формула рассчета</label>
+            <input name="typeOfDiscount" type="text" class="form-control" id="exampleInputaddress" placeholder="" >
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button type="submit" class="btn btn-primary">Создать</button>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+  function showPreview(event) {
+    var input = event.target;
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        var preview = document.getElementById('imagePreview');
+        preview.innerHTML = '<img src="' + e.target.result + '" alt="Preview">';
+      };
+      reader.readAsDataURL(input.files[0]);
+    } else {
+      var preview = document.getElementById('imagePreview');
+      preview.innerHTML = '<img src="путь_к_изображению_по_умолчанию" alt="Изображение по умолчанию">';
+    }
+  }
+</script>
+</div>
+</html>

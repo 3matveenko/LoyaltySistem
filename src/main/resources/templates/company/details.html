@@ -49,7 +49,7 @@
     <div class="card card-primary">
       <div class="card-header d-flex justify-content-between">
         <h3 class="card-title">Карточки компании</h3>
-        <div class="ml-auto"><a href="/card/create">Создать новую карточку</a> </div>
+        <div class="ml-auto"><a th:href="'/card/create/'+${company.getId()}">Создать новую карточку</a> </div>
       </div>
 
       <div class="card-body">
@@ -57,7 +57,7 @@
     <th:block th:if="${countCard == 0}">
       <label style="margin-left: 3rem"> У компании нет карточек</label>
     </th:block>
-        <div class="row justify-content-between">
+        <div class="row justify-content">
           <div class="col-md-4 mb-3" th:each="card : ${cardtocompany}">
             <div style="margin-left: 4rem; width: 306px; height: 240px" class="card">
               <img class="card-img-top img-fluid" th:src="${card.image}" width="306" height="188">
