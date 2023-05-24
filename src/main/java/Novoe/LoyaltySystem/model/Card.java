@@ -1,8 +1,6 @@
 package Novoe.LoyaltySystem.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,4 +18,8 @@ public class Card extends BaseEntity{
 
     @Column(name = "type_of_discount")
     private String typeOfDiscount;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    private TypeOfCard typeOfCard;
+
 }
