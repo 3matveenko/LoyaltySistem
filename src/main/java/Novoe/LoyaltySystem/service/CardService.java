@@ -62,26 +62,10 @@ public class CardService {
     }
 
     public void update(MultipartFile file, String name, String typeOfDiscount, Long idCard, Long idTypeofCard) throws IOException{
-        Card card = cardRepository.findById(idCard).orElseThrow();
+        Card card = findByid(idCard);
         if(!"".equals(file.getOriginalFilename())) {
-            String pattern = "/dist/img/cards/(.*)";
-            String input = card.getImage();
-
-            Pattern regex = Pattern.compile(pattern);
-            Matcher matcher = regex.matcher(input);
-
-            String variablePart = null;
-            if (matcher.find()) {
-                variablePart = matcher.group(1);
-            }
+            deleteImage(card);
             String destinationPath = Paths.get("src/main/resources/static/dist/img/cards").toString();
-
-            String oldImage = destinationPath+"/"+variablePart;
-            File imageFile = new File(oldImage);
-            if (imageFile.exists()) {
-                imageFile.delete();
-            }
-
             String imagename = UUID.randomUUID().toString();
             String fileName = imagename+".jpeg";
             Path targetPath = Paths.get(destinationPath, fileName);
@@ -98,6 +82,35 @@ public class CardService {
 
     public Card findByid(Long id){
         return cardRepository.findById(id).orElseThrow();
+    }
+
+    public void deleteImage(Card card){
+        String pattern = "/dist/img/cards/(.*)";
+        String input = card.getImage();
+
+        Pattern regex = Pattern.compile(pattern);
+        Matcher matcher = regex.matcher(input);
+
+        String variablePart = null;
+        if (matcher.find()) {
+            variablePart = matcher.group(1);
+        }
+        String destinationPath = Paths.get("src/main/resources/static/dist/img/cards").toString();
+
+        String oldImage = destinationPath+"/"+variablePart;
+        File imageFile = new File(oldImage);
+        if (imageFile.exists()) {
+            imageFile.delete();
+        }
+    }
+    public void delete(Long cardId, Long companyId){
+       Card card = findByid(cardId);
+       Company company = companyService.findById(companyId);
+       List<Card> cards = company.getCards();
+        cards.remove(card);
+        companyService.save(company);
+       deleteImage(card);
+        cardRepository.delete(card);
     }
 
 }

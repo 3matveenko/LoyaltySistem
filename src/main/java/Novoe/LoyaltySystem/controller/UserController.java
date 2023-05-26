@@ -106,13 +106,18 @@ public class UserController {
     Boolean result = userService.retype(oldPassword,password,repeat,userId);
     if(result==null){
        model.addAttribute("oldPass", true);
+        model.addAttribute("userId", userId);
         return "user/change";
     }
     if(result){
-        model.addAttribute("repeat", true);
+        model.addAttribute("ok", true);
+        model.addAttribute("userId", userId);
+
         return "user/change";
     } else {
-        model.addAttribute("ok", true);
+        model.addAttribute("repeat", true);
+        model.addAttribute("userId", userId);
+
         return "user/change";
     }
     }

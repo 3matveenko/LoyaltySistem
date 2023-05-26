@@ -78,4 +78,12 @@ public class CardController {
         cardService.update(file, name, typeOfDiscount,Long.parseLong(idCard), typeOfCard);
         return "redirect:/company/details/"+idCompany;
     }
+
+    @PostMapping(value = "/delete")
+    public String delete(
+            @RequestParam("companyId") Long idCompany,
+            @RequestParam("cardId") Long cardId){
+        cardService.delete(cardId, idCompany);
+        return "redirect:/company/details/"+idCompany;
+    }
 }

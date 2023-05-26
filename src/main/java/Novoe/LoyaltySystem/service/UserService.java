@@ -109,4 +109,5 @@ public class UserService implements UserDetailsService {
         user.setCompany(companyService.findById(companyId));
         userRepository.save(user);
     }
+
 }

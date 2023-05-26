@@ -6,7 +6,7 @@
     <div class="card-header">
       <h3 class="card-title">Создать новую компанию</h3>
     </div>
-    <form th:action="@{'/user/create'}" method="post" >
+    <form th:action="@{'/user/create'}" method="post" id="Form">
       <div class="card-body">
         <div th:if="${repeat}" class="alert alert-danger" role="alert">
           Пароли не совпадают!
@@ -35,6 +35,9 @@
             <div class="form-group">
               <label for="exampleInputRepeat">Повторите пароль</label>
               <input name="repeat" type="text" class="form-control" id="exampleInputRepeat" required>
+              <div id="passwordMismatch" style="display: none; color: red">
+                Пароли не совпадают!
+              </div>
             </div>
           </div>
           <div class="col">
@@ -50,5 +53,20 @@
       </div>
     </form>
   </div>
+  <script>
+    document.getElementById('Form').addEventListener('submit', function(event) {
+      var passwordInput = document.getElementById('exampleInputPassword');
+      var repeatInput = document.getElementById('exampleInputRepeat');
+      var passwordMismatchDiv = document.getElementById('passwordMismatch');
+
+      if (passwordInput.value != repeatInput.value) {
+        event.preventDefault();
+        passwordMismatchDiv.style.display = 'block';
+      } else {
+        passwordMismatchDiv.style.display = 'none';
+      }
+    });
+  </script>
+</div>
 
 </html>

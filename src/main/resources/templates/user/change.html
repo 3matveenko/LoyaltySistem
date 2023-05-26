@@ -8,7 +8,7 @@
       <h3 class="card-title">Изменить данные</h3>
     </div>
     <div class="card-body">
-      <form th:action="@{'/user/update'}" method="post">
+      <form th:action="@{'/user/change'}" method="post" id="Form">
         <input type="hidden" th:value="${userId}" name="userId">
         <div class="row">
           <div class="col">
@@ -19,13 +19,16 @@
               <div th:if="${repeat}" class="alert alert-danger" role="alert">
                 Повтор пароля не верный!
               </div>
-              <div th:if="${ok}" class="alert success" role="alert">
-                Повтор пароля не верный!
+              <div th:if="${ok}" class="alert alert-success" role="alert">
+                Пароль успешно изменен!
               </div>
               <label for="exampleInputold">Старый пароль</label>
               <input   name="old_password" type="text" class="form-control" id="exampleInputold">
             </div>
             <div class="form-group">
+              <div id="passwordMismatch" style="display: none; color: red">
+                Пароли не совпадают!
+              </div>
               <label for="exampleInputnew">Введите новый пароль</label>
               <input   name="password" type="text" class="form-control" id="exampleInputnew">
             </div>
@@ -48,6 +51,19 @@
       </form>
     </div>
   </div>
+  <script>
+    document.getElementById('Form').addEventListener('submit', function(event) {
+      var passwordInput = document.getElementById('exampleInputnew');
+      var repeatInput = document.getElementById('exampleInputrepeat');
+      var passwordMismatchDiv = document.getElementById('passwordMismatch');
 
+      if (passwordInput.value !== repeatInput.value) {
+        event.preventDefault();
+        passwordMismatchDiv.style.display = 'block';
+      } else {
+        passwordMismatchDiv.style.display = 'none';
+      }
+    });
+  </script>
 </div>
 </html>
