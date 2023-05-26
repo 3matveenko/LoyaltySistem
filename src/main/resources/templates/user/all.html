@@ -38,11 +38,15 @@
                         </thead>
                         <tbody th:each="user : ${users}" >
                         <tr>
-                            <td th:text="${user.id}"></td>
-                            <td th:text="${user.username}"></td>
-                            <td>почта</td>
-                            <td>компания</td>
-                            <td><a th:href="'/company/update/' + ${user.id}" class="btn btn-transparent btn-outline-none"><img src="/dist/img/edit.png" width="30" height="30"></a></td>
+                            <td th:onclick="'redirectToUserDetails(\'' + ${user.id} + '\')'" style="cursor: pointer;"
+                                    th:text="${user.id}"></td>
+                            <td th:onclick="'redirectToUserDetails(\'' + ${user.id} + '\')'" style="cursor: pointer;"
+                                    th:text="${user.name}"></td>
+                            <td th:onclick="'redirectToUserDetails(\'' + ${user.id} + '\')'" style="cursor: pointer;"
+                                    th:text="${user.email}"></td>
+                            <td th:onclick="'redirectToUserDetails(\'' + ${user.id} + '\')'" style="cursor: pointer;"
+                                    th:text="${user.company.companyName}"></td>
+                            <td><a th:href="'/user/update/' + ${user.id}" class="btn btn-transparent btn-outline-none"><img src="/dist/img/edit.png" width="30" height="30"></a></td>
                             <td><button type="button" class="btn btn-transparent btn-outline-none" data-toggle="modal"
                                         th:data-target="'#exampleModal' + ${user.id}"><img src="/dist/img/delete.png" width="30" height="30"></button></td>
 
@@ -100,14 +104,14 @@
                 </div>
             </div>
             <div class="tab-custom-content">
-                <form th:action="@{'/company/create'}" method="get" >
-                    <p class="lead mb-0"><button class="btn btn-outline-primary">создать новую компанию</button></p>
+                <form th:action="@{'/user/create'}" method="get" >
+                    <p class="lead mb-0"><button class="btn btn-outline-primary">создать нового пользователя</button></p>
                 </form>
             </div>
         </div>
         <script>
-            function redirectToCompanyDetails(companyId) {
-                window.location.href = '/company/details/' + companyId;
+            function redirectToUserDetails(companyId) {
+                window.location.href = '/user/details/' + companyId;
             }
         </script>
         <!-- /.card -->

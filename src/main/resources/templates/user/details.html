@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/main.html">
+<div layout:fragment="main-content">
+  <div class="card card-primary">
+    <div class="card-header d-flex justify-content-between">
+      <h3 class="card-title">Информация о карте</h3>
+      <div class="ml-auto"><a th:href="'/user/update/'+${user.id}">Изменить информацию</a></div>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <input type="hidden" th:value="${user.id}" name="id" class="form-control">
+            <label>Имя пользователя</label>
+            <h4 th:text="${user.name}"></h4>
+          </div>
+          <div class="form-group">
+            <a href="/user/change" class="btn btn-warning">изменить пароль</a>
+          </div>
+
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label>Электронная почта</label>
+            <h4 th:text="${user.email}"></h4>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label>Компания</label>
+            <h4 th:text="${user.company.companyName}"></h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</html>

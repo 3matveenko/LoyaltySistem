@@ -1,5 +1,6 @@
 package Novoe.LoyaltySystem.service;
 
+import Novoe.LoyaltySystem.model.Company;
 import Novoe.LoyaltySystem.model.Permission;
 import Novoe.LoyaltySystem.model.User;
 import Novoe.LoyaltySystem.repository.PermissionRepository;
@@ -27,15 +28,22 @@ public class UserService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private PermissionRepository permissionRepository;
+    private PermissionService permissionService;
+
+    @Autowired
+    private CompanyService companyService;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findUserByUserName(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findUserByEmail(email);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
         return user;
+    }
+
+    public User getUserById(Long id){
+        return userRepository.findById(id).orElseThrow();
     }
 
     public User getUser() {
@@ -47,16 +55,17 @@ public class UserService implements UserDetailsService {
         return null;
     }
 
-    public Boolean register(String FullName, String email, String password, String repeat) {
+    public Boolean create(String userName, Long companyId, String email, String password, String repeat) {
         Boolean result = null;
         if (password.equals(repeat)) {
-            User user1 = userRepository.findUserByUserName(email);
+            User user1 = userRepository.findUserByEmail(email);
             if (user1 == null) {
                 User user = new User();
-                //user.setFullName(FullName);
-               // user.setEmail(email);
+                user.setName(userName);
+                user.setEmail(email);
+                user.setCompany(companyService.findById(companyId));
                 user.setPassword(passwordEncoder.encode(password));
-                Permission defaultPermission = permissionRepository.findByName("ROLE_USER");
+                Permission defaultPermission = permissionService.findByName("ROLE_USER");
                 List<Permission> newList = new ArrayList<>();
                 if (defaultPermission != null) {
                     newList.add(defaultPermission);
@@ -71,21 +80,19 @@ public class UserService implements UserDetailsService {
         return result;
     }
 
-    public Boolean retype(String old_password, String password, String repeat) {
+    public Boolean retype(String oldPassword, String password, String repeat, Long userId) {
         Boolean result = null;
-        User user = getUser();
-        if (user != null) {
+        User user = userRepository.findById(userId).orElseThrow();
             if (password.equals(repeat)) {
-                if (passwordEncoder.matches(old_password, user.getPassword())) {
+                if (passwordEncoder.matches(oldPassword, user.getPassword())) {
                     user.setPassword(passwordEncoder.encode(password));
                     userRepository.save(user);
-                    result = true;
+                    return true;
+                } else {
+                    return result;
                 }
-            } else {
-                result = false;
             }
-        }
-        return result;
+           return false;
     }
     public long getCount(){
         return userRepository.count();
@@ -93,5 +100,13 @@ public class UserService implements UserDetailsService {
 
     public List<User> allUsers(){
        return userRepository.findAll();
+    }
+
+    public void update(Long userId, String userName,String email,Long companyId){
+        User user = getUserById(userId);
+        user.setName(userName);
+        user.setEmail(email);
+        user.setCompany(companyService.findById(companyId));
+        userRepository.save(user);
     }
 }

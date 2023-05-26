@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/main.html"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<div layout:fragment="main-content">
+  <div class="card card-primary">
+    <div class="card-header">
+      <h3 class="card-title">Изменить данные</h3>
+    </div>
+    <div class="card-body">
+      <form th:action="@{'/user/update'}" method="post">
+        <input type="hidden" th:value="${user.id}" name="userId">
+        <input sec:authorize="hasAnyRole('ROLE_USER')" type="hidden" th:value="${user.company.id}" name="company">
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="exampleInputname">Имя</label>
+              <input th:value="${user.name}"  name="name" type="text" class="form-control" id="exampleInputname" placeholder="">
+            </div>
+
+            <div class="form-group" sec:authorize="hasAnyRole('ROLE_ADMIN')">
+              <label for="userCompany">Компания</label>
+              <select name="company" type="text" class="form-control" id="userCompany">
+                  <option th:each="company : ${companies}" th:value="${company.id}" th:text="${company.companyName}"
+                          th:selected="${user.id == user.company.id}"></option>
+                </select>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="exampleInputaddress">Электронная почта</label>
+              <input th:value="${user.email}" name="email" type="text" class="form-control"
+                     id="exampleInputaddress" placeholder="" >
+            </div>
+            <div class="form-group">
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button type="submit" class="btn btn-primary">Принять изменения</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
+</html>

@@ -2,8 +2,10 @@ package Novoe.LoyaltySystem.service;
 
 import Novoe.LoyaltySystem.model.Card;
 import Novoe.LoyaltySystem.model.Company;
+import Novoe.LoyaltySystem.model.TypeOfCard;
 import Novoe.LoyaltySystem.repository.CardRepository;
 import Novoe.LoyaltySystem.repository.CompanyRepository;
+import Novoe.LoyaltySystem.repository.TypeOfCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,14 +30,17 @@ public class CardService {
     CardRepository cardRepository;
 
     @Autowired
-    CompanyRepository companyRepository;
+    CompanyService companyService;
+
+    @Autowired
+    TypeOfCardService typeOfCardService;
 
     public long getCount(Long id){
-       Company company = companyRepository.findById(id).orElseThrow();
+       Company company = companyService.findById(id);
         return company.getCards().size();
     }
 
-    public String createCard(MultipartFile file, String name, String typeOfDiscount,Long idCompany) throws IOException{
+    public String createCard(MultipartFile file, String name, String typeOfDiscount,Long idCompany, long idTypeofCard) throws IOException{
         String imagename = UUID.randomUUID().toString();
         String fileName = imagename+".jpeg";
         String destinationPath = Paths.get("src/main/resources/static/dist/img/cards").toString();
@@ -45,16 +50,18 @@ public class CardService {
         card.setName(name);
         card.setImage("/dist/img/cards/"+imagename+".jpeg");
         card.setTypeOfDiscount(typeOfDiscount);
+        TypeOfCard typeOfCard = typeOfCardService.getTypeOfCardById(idTypeofCard);
+        card.setTypeOfCard(typeOfCard);
         cardRepository.save(card);
-        Company company = companyRepository.findById(idCompany).orElseThrow();
+        Company company = companyService.findById(idCompany);
         List<Card> cards = company.getCards();
         cards.add(card);
         company.setCards(cards);
-        companyRepository.save(company);
+        companyService.save(company);
         return "ok";
     }
 
-    public void update(MultipartFile file, String name, String typeOfDiscount, Long idCard) throws IOException{
+    public void update(MultipartFile file, String name, String typeOfDiscount, Long idCard, Long idTypeofCard) throws IOException{
         Card card = cardRepository.findById(idCard).orElseThrow();
         if(!"".equals(file.getOriginalFilename())) {
             String pattern = "/dist/img/cards/(.*)";
@@ -84,10 +91,13 @@ public class CardService {
 
         card.setName(name);
         card.setTypeOfDiscount(typeOfDiscount);
+        TypeOfCard typeOfCard = typeOfCardService.getTypeOfCardById(idTypeofCard);
+        card.setTypeOfCard(typeOfCard);
         cardRepository.save(card);
     }
 
     public Card findByid(Long id){
         return cardRepository.findById(id).orElseThrow();
     }
+
 }

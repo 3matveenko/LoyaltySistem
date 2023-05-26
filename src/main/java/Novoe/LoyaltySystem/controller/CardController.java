@@ -2,6 +2,7 @@ package Novoe.LoyaltySystem.controller;
 
 import Novoe.LoyaltySystem.service.CardService;
 import Novoe.LoyaltySystem.service.CompanyService;
+import Novoe.LoyaltySystem.service.TypeOfCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -22,10 +23,14 @@ public class CardController {
     @Autowired
     CompanyService companyService;
 
+    @Autowired
+    TypeOfCardService typeOfCardService;
+
     @GetMapping(value = "/create/{companyId}")
     public String create(
             @PathVariable("companyId") Long companyId,
             Model model){
+        model.addAttribute("allTypeOfCard", typeOfCardService.allTypeOfCard());
         model.addAttribute("id", companyId);
         return "card/create";
     }
@@ -35,8 +40,9 @@ public class CardController {
             @RequestParam("id_company") Long idCompany,
             @RequestParam("file") MultipartFile file,
             @RequestParam("name") String name,
-            @RequestParam("typeOfDiscount") String typeOfDiscount) throws IOException {
-        cardService.createCard(file, name, typeOfDiscount, idCompany);
+            @RequestParam("typeOfDiscount") String typeOfDiscount,
+            @RequestParam("typeOfCard") Long typeOfCard) throws IOException {
+        cardService.createCard(file, name, typeOfDiscount, idCompany, typeOfCard);
         return "redirect:/company/details/"+idCompany;
     }
 
@@ -55,6 +61,7 @@ public class CardController {
             @PathVariable("companyId") Long companyId,
             @PathVariable("cardId") Long cardId,
             Model model){
+        model.addAttribute("allTypeOfCard", typeOfCardService.allTypeOfCard());
         model.addAttribute("companyId",companyId);
         model.addAttribute("card", cardService.findByid(cardId));
         return "card/update";
@@ -66,8 +73,9 @@ public class CardController {
             @RequestParam("id_company") String idCompany,
             @RequestParam("file") MultipartFile file,
             @RequestParam("name") String name,
-            @RequestParam("typeOfDiscount") String typeOfDiscount) throws IOException {
-        cardService.update(file, name, typeOfDiscount,Long.parseLong(idCard));
+            @RequestParam("typeOfDiscount") String typeOfDiscount,
+            @RequestParam("typeOfCard") Long typeOfCard) throws IOException {
+        cardService.update(file, name, typeOfDiscount,Long.parseLong(idCard), typeOfCard);
         return "redirect:/company/details/"+idCompany;
     }
 }

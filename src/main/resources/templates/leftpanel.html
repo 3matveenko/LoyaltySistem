@@ -3,10 +3,10 @@
     <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-            <a href="#">
+            <a th:href="'/user/personal'">
             <div class="info">
                 <div>Личный кабинет</div>
-                 <span class="mt-2" th:text="${username}"></span>
+                 <span class="mt-2" th:text="${session.userNAME}"></span>
             </div>
             </a>
         </div>

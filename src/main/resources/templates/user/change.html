@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/main.html"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<div layout:fragment="main-content">
+  <div class="card card-primary">
+    <div class="card-header">
+      <h3 class="card-title">Изменить данные</h3>
+    </div>
+    <div class="card-body">
+      <form th:action="@{'/user/update'}" method="post">
+        <input type="hidden" th:value="${userId}" name="userId">
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <div th:if="${oldPass}" class="alert alert-danger" role="alert">
+                Старый пароль не подходит!
+              </div>
+              <div th:if="${repeat}" class="alert alert-danger" role="alert">
+                Повтор пароля не верный!
+              </div>
+              <div th:if="${ok}" class="alert success" role="alert">
+                Повтор пароля не верный!
+              </div>
+              <label for="exampleInputold">Старый пароль</label>
+              <input   name="old_password" type="text" class="form-control" id="exampleInputold">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputnew">Введите новый пароль</label>
+              <input   name="password" type="text" class="form-control" id="exampleInputnew">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputrepeat">Повторите пароль</label>
+              <input   name="repeat" type="text" class="form-control" id="exampleInputrepeat">
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+
+            </div>
+            <div class="form-group">
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button type="submit" class="btn btn-primary">Принять изменения</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
+</html>

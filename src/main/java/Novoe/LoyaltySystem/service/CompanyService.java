@@ -18,11 +18,18 @@ public class CompanyService {
        return companyRepository.count();
     }
 
+
     public List<Company> allCompany(){
     return companyRepository.findAll();
     }
 
     public void create(Company company){
+        companyRepository.save(company);
+    }
+
+    public void update(Company company){
+        Company company1 = companyRepository.findById(company.getId()).orElseThrow();
+        company.setCards(company1.getCards());
         companyRepository.save(company);
     }
 
@@ -32,6 +39,10 @@ public class CompanyService {
 
     public Company findById(Long id){
        return companyRepository.findById(id).orElseThrow();
+    }
+
+    public void save(Company company){
+        companyRepository.save(company);
     }
 
     public List<Card> CardToCompany(Long id){

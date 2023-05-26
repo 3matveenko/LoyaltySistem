@@ -32,8 +32,14 @@ public class CompanyController {
     }
 
     @PostMapping(value = "/create")
-    public String createCompanyaction(@ModelAttribute Company company){
+    public String createCompany(@ModelAttribute Company company){
         companyService.create(company);
+        return "redirect:/company/";
+    }
+
+    @PostMapping(value = "/update")
+    public String updateCompany(@ModelAttribute Company company){
+        companyService.update(company);
         return "redirect:/company/";
     }
 

@@ -33,7 +33,15 @@
           <div class="col">
             <div class="form-group">
               <label for="exampleInputaddress">Формула рассчета</label>
-              <input th:value="${card.typeOfDiscount}" name="typeOfDiscount" type="text" class="form-control" id="exampleInputaddress" placeholder="" >
+              <input th:value="${card.typeOfDiscount}" name="typeOfDiscount" type="text" class="form-control"
+                     id="exampleInputaddress" placeholder="" >
+            </div>
+            <div class="form-group">
+              <label for="typeOfCard">Тип карты</label>
+              <select name="typeOfCard" type="text" class="form-control" id="typeOfCard">
+                <option th:each="type : ${allTypeOfCard}" th:value="${type.id}" th:text="${type.name}"
+                        th:selected="${type.id == card.typeOfCard.id}"></option>
+              </select>
             </div>
           </div>
         </div>

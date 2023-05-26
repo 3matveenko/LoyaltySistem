@@ -16,10 +16,16 @@ import java.util.List;
 @Table(name="t_users")
 public class User extends BaseEntity implements UserDetails {
     @Column(name = "user_name")
-    private String userName;
+    private String name;
 
     @Column(name = "password")
     private String password;
+
+    @Column(name = "email")
+    private String email;
+
+    @OneToOne
+    private Company company;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Permission> permissions;
@@ -31,7 +37,7 @@ public class User extends BaseEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return userName;
+        return email;
     }
 
     @Override

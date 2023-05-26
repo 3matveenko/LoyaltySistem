@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/main.html">
+<div layout:fragment="main-content">
+  <div class="card card-primary">
+    <div class="card-header">
+      <h3 class="card-title">Создать новую компанию</h3>
+    </div>
+    <form th:action="@{'/user/create'}" method="post" >
+      <div class="card-body">
+        <div th:if="${repeat}" class="alert alert-danger" role="alert">
+          Пароли не совпадают!
+        </div>
+        <div th:if="${email}" class="alert alert-danger" role="alert">
+          Пользователь с таким адресом почты существует!
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="exampleInputname">Имя пользователя</label>
+              <input  name="userName" type="text" class="form-control" id="exampleInputname" required>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputcompany">Компания</label>
+              <select name="company" type="text" class="form-control" id="exampleInputcompany">
+                <option th:each="company : ${companies}" th:value="${company.id}" th:text="${company.companyName}"></option>
+              </select>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="exampleInputPassword">Пароль</label>
+              <input name="password" type="text" class="form-control" id="exampleInputPassword" required>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputRepeat">Повторите пароль</label>
+              <input name="repeat" type="text" class="form-control" id="exampleInputRepeat" required>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="exampleInputaddress">Электронная почта</label>
+              <input name="email" type="text" class="form-control" id="exampleInputaddress" placeholder="">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button type="submit" class="btn btn-primary">Ввод</button>
+      </div>
+    </form>
+  </div>
+
+</html>
