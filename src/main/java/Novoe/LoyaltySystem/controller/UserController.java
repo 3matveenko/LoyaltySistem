@@ -9,6 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.util.Properties;
+
 @Controller
 @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 @RequestMapping(value = "/user")
@@ -59,13 +64,13 @@ public class UserController {
             @RequestParam("repeat") String repeat
             ){
         Boolean result = userService.create(userName,companyId,email, password, repeat);
+        model.addAttribute("companies", companyService.allCompany());
+
         if(result==null){
-            model.addAttribute("companies", companyService.allCompany());
             model.addAttribute("repeat", true);
             return "user/create";
         }
         if(!result){
-            model.addAttribute("companies", companyService.allCompany());
             model.addAttribute("email", true);
             return "user/create";
         } else {
@@ -103,22 +108,17 @@ public class UserController {
             @RequestParam("password") String password,
             @RequestParam("repeat") String repeat,
             @RequestParam("userId") Long userId){
-    Boolean result = userService.retype(oldPassword,password,repeat,userId);
-    if(result==null){
-       model.addAttribute("oldPass", true);
-        model.addAttribute("userId", userId);
-        return "user/change";
+    int result = userService.retype(oldPassword,password,repeat,userId);
+    model.addAttribute("userId", userId);
+    String response[] = {"repeat","oldPass","ok"};
+    model.addAttribute(response[result], true);
+    return "user/change";
     }
-    if(result){
-        model.addAttribute("ok", true);
-        model.addAttribute("userId", userId);
 
-        return "user/change";
-    } else {
-        model.addAttribute("repeat", true);
-        model.addAttribute("userId", userId);
-
-        return "user/change";
+    @GetMapping(value = "/delete/{userId}")
+    public String delete(
+            @PathVariable("userId") Long userId){
+        userService.delete(userId);
+        return "redirect:/user/";
     }
-    }
-    }
+  }

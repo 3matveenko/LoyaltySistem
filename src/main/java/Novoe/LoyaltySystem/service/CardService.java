@@ -107,10 +107,10 @@ public class CardService {
        Card card = findByid(cardId);
        Company company = companyService.findById(companyId);
        List<Card> cards = company.getCards();
-        cards.remove(card);
-        companyService.save(company);
+       cards.remove(card);
+       companyService.save(company);
        deleteImage(card);
-        cardRepository.delete(card);
+       cardRepository.delete(card);
     }
 
 }

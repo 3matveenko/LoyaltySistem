@@ -28,7 +28,7 @@ public class CompanyService {
     }
 
     public void update(Company company){
-        Company company1 = companyRepository.findById(company.getId()).orElseThrow();
+        Company company1 = companyRepository.findById(company.getId()).orElseThrow(); //в company нет карточек. Для того, чтобы измененная компания была с карточками, ищем в базе связку с карточками
         company.setCards(company1.getCards());
         companyRepository.save(company);
     }
