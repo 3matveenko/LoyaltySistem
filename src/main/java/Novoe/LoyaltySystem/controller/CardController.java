@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
 @Controller
-@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+@PreAuthorize("isAuthenticated()")
 @RequestMapping(value = "/card")
 public class CardController {
 

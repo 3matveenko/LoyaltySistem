@@ -20,6 +20,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 
 @Service
@@ -39,15 +40,15 @@ public class UserService implements UserDetailsService {
 
     @Override
     public User loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findUserByEmail(email);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-        return user;
+        return userRepository.findUserByEmail(email);
     }
 
     public User getUserById(Long id){
         return userRepository.findById(id).orElseThrow();
+    }
+
+    public User getUserByEmail(String email){
+       return userRepository.findUserByEmail(email);
     }
 
     public User getUser() {
@@ -150,6 +151,17 @@ public class UserService implements UserDetailsService {
         } catch (Exception e){
             return false;
         }
+    }
+
+    public void deletePassword(String email,String newPassword){
+        User user = getUserByEmail(email);
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
+    public Long getCompanyIdByUserId(Long UserId){
+       User user = getUserById(UserId);
+       return user.getCompany().getId();
     }
 
 }

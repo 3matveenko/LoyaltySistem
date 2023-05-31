@@ -3,6 +3,8 @@ package Novoe.LoyaltySystem.controller;
 import Novoe.LoyaltySystem.model.Company;
 import Novoe.LoyaltySystem.service.CardService;
 import Novoe.LoyaltySystem.service.CompanyService;
+import Novoe.LoyaltySystem.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -10,7 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+@PreAuthorize("isAuthenticated()")
 @RequestMapping(value = "/company")
 public class CompanyController {
 
@@ -20,18 +22,24 @@ public class CompanyController {
     @Autowired
     CardService cardService;
 
+    @Autowired
+    UserService userService;
+
     @GetMapping(value = "/")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public String allCompany(Model model){
     model.addAttribute("companies", companyService.allCompany());
     return "company/all";
     }
 
     @GetMapping(value = "/create")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public String createCompanyform(){
         return "company/create";
     }
 
     @PostMapping(value = "/create")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public String createCompany(@ModelAttribute Company company){
         companyService.create(company);
         return "redirect:/company/";
@@ -40,10 +48,11 @@ public class CompanyController {
     @PostMapping(value = "/update")
     public String updateCompany(@ModelAttribute Company company){
         companyService.update(company);
-        return "redirect:/company/";
+        return "redirect:/company/details/"+company.getId();
     }
 
     @GetMapping(value = "/delete/{companyId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public String deleteCompany(@PathVariable("companyId") Long companyId){
         companyService.delete(companyId);
         return "redirect:/company/";
@@ -63,5 +72,11 @@ public class CompanyController {
                                  @PathVariable("companyId") Long companyId){
         model.addAttribute("company", companyService.findById(companyId));
         return "/company/update";
+    }
+
+    @GetMapping(value = "/mycompany")
+    public String myCompany(HttpSession session){
+        Long id = userService.getCompanyIdByUserId((Long) session.getAttribute("userID"));
+        return "redirect:/company/details/"+id;
     }
 }

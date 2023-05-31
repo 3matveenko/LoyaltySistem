@@ -49,4 +49,5 @@ public class CompanyService {
         Company company = companyRepository.findById(id).orElseThrow();
         return company.getCards();
     }
+
 }

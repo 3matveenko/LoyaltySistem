@@ -15,7 +15,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 @Controller
-@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+@PreAuthorize("isAuthenticated()")
 @RequestMapping(value = "/user")
 public class UserController {
 
