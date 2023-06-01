@@ -19,6 +19,9 @@ public class Card extends BaseEntity{
     @Column(name = "type_of_discount")
     private String typeOfDiscount;
 
+    @Column(name = "status")
+    private boolean status;
+
     @OneToOne(fetch = FetchType.EAGER)
     private TypeOfCard typeOfCard;
 

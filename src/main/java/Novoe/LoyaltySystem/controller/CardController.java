@@ -86,4 +86,14 @@ public class CardController {
         cardService.delete(cardId, idCompany);
         return "redirect:/company/details/"+idCompany;
     }
+
+    @PostMapping(value = "/update_status")
+    public String updateStatus(
+            Model model,
+            @RequestParam("id") Long id,
+            @RequestParam("cardStatus") Boolean status,
+            @RequestParam("idCompany")Long idCompany){
+        cardService.updateStatus(id, status);
+        return "redirect:/company/details/"+idCompany+"?cardstab";
+    }
 }

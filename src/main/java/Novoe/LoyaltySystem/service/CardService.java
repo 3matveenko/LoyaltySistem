@@ -113,4 +113,10 @@ public class CardService {
        cardRepository.delete(card);
     }
 
+    public void updateStatus(Long id, Boolean status){
+        Card card = findByid(id);
+        card.setStatus(status);
+        cardRepository.save(card);
+    }
+
 }

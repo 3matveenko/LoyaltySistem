@@ -14,6 +14,7 @@
                 <div class="col">
                     <div class="form-group">
                         <input type="hidden" th:value="${card.id}" name="id" class="form-control">
+                        <input type="hidden" th:value="${companyId}" name="idCompany" class="form-control">
                         <label>Название</label>
                         <h4 th:text="${card.name}"></h4>
                     </div>
@@ -22,13 +23,30 @@
                     </div>
                     <div class="form-group">
                         <img th:src="${card.image}" width="306" height="188">
-
                     </div>
                 </div>
                 <div class="col">
                     <div class="form-group">
                         <label>TypeOfDiscount</label>
                         <h4 th:text="${card.typeOfDiscount}"></h4>
+                    </div>
+                    <div class="form-group mt-5">
+                        <form th:action="@{'/card/update_status'}" method="post">
+                            <input name="id" type="hidden" th:value="${card.id}">
+                            <input name="idCompany" type="hidden" th:value="${companyId}">
+                            <div class="form-group">
+                                <label>Статус карты</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="cardStatus" id="on" value="1" th:checked="${card.status == true}">
+                                    <label class="form-check-label" for="on">Карта активна</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="cardStatus" id="off" value="0" th:checked="${card.status == false}">
+                                    <label class="form-check-label" for="off">Карта не активна</label>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Изменить статус</button>
+                        </form>
                     </div>
                 </div>
                 <div class="col">

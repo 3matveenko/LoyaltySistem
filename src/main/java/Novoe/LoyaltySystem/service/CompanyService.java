@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CompanyService {
@@ -24,6 +25,8 @@ public class CompanyService {
     }
 
     public void create(Company company){
+        String token = UUID.randomUUID().toString();
+        company.setToken(token);
         companyRepository.save(company);
     }
 
@@ -45,7 +48,7 @@ public class CompanyService {
         companyRepository.save(company);
     }
 
-    public List<Card> CardToCompany(Long id){
+    public List<Card> cardToCompany(Long id){
         Company company = companyRepository.findById(id).orElseThrow();
         return company.getCards();
     }

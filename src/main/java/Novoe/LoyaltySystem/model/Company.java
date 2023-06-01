@@ -27,6 +27,9 @@ public class Company extends BaseEntity{
     @Column(name = "bin")
     private String bin;
 
+    @Column(name = "token")
+    private String token;
+
     @OneToMany(fetch = FetchType.EAGER)
     private List<User> users;
 

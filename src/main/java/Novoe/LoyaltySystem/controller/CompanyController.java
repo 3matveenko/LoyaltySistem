@@ -3,6 +3,7 @@ package Novoe.LoyaltySystem.controller;
 import Novoe.LoyaltySystem.model.Company;
 import Novoe.LoyaltySystem.service.CardService;
 import Novoe.LoyaltySystem.service.CompanyService;
+import Novoe.LoyaltySystem.service.CustomerService;
 import Novoe.LoyaltySystem.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class CompanyController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    CustomerService customerService;
 
     @GetMapping(value = "/")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
@@ -61,7 +65,8 @@ public class CompanyController {
     @GetMapping(value = "/details/{companyId}")
     public String detailsCompany(Model model,
             @PathVariable("companyId") Long companyId){
-        model.addAttribute("cardtocompany", companyService.CardToCompany(companyId));
+        model.addAttribute("customers", customerService.getCustomersByCompanyId(companyId));
+        model.addAttribute("cardtocompany", companyService.cardToCompany(companyId));
         model.addAttribute("countCard", cardService.getCount(companyId));
         model.addAttribute("company", companyService.findById(companyId));
         return "/company/details";
