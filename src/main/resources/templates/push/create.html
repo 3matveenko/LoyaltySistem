@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/main.html">
+<div layout:fragment="main-content">
+    <style>
+      #editor {
+        height: 400px;
+        border: 1px solid #2c3034;
+        border-radius: 5px;
+      }
+      #editor img {
+        max-width: 100%;
+        height: auto;
+      }
+    </style>
+    <script src="https://unpkg.com/interactjs/dist/interact.min.js"></script>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-10">
+        <form method="post" th:action="@{'/push/add'}">
+        <div>
+        <label class="mt-3" for="title">Название уведомления</label>
+        </div>
+        <input id="title" name="title" required>
+        <input type="hidden" id="savedContent" name="text">
+        <div class="mt-3" id="toolbar">
+          <div class="btn-group">
+          <button type="button" class="btn btn-default" onclick="format('bold')"><img src="/icons/bold.png" width="25px"></button>
+          <button type="button" class="btn btn-default" onclick="format('italic')"><img src="/icons/ltalic.png" width="25px"></button>
+          <button type="button" class="btn btn-default" onclick="format('underline')"><img src="/icons/underline.png" width="25px"></button>
+          <button type="button" class="btn btn-default" onclick="format('justifyLeft')"><img src="/icons/align_left.png" width="25px"></button>
+          <button type="button" class="btn btn-default" onclick="format('justifyCenter')"><img src="/icons/align_center.png" width="25px"></button>
+          <button type="button" class="btn btn-default" onclick="format('justifyRight')"><img src="/icons/align-right.png" width="25px"></button>
+          <button type="button" class="btn btn-default" onclick="format('createLink')"><img src="/icons/link.png" width="25px"></button>
+          </div>
+            <select class="m-2" onchange="changeFontSize(this.value)">
+            <option value="">Шрифт</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+          </select>
+          <input type="file" id="imageUpload" onchange="uploadImage()" accept="image/*">
+        </div>
+
+        <div id="linkModal" class="modal" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Параметры ссылки</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="linkText">Текст ссылки</label>
+                  <input type="text" class="form-control" id="linkText">
+                </div>
+                <div class="form-group">
+                  <label for="linkURL">URL (Адрес ссылки)</label>
+                  <input type="url" class="form-control" id="linkURL">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="createLink()">Добавить</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="editor" contenteditable></div>
+              <button class="mt-3 btn btn-default" onclick="saveContent()">Сохранить</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+    function format(command) {
+      if (command === 'createLink') {
+        $('#linkModal').modal('show');
+      } else {
+        document.execCommand(command, false, null);
+      }
+    }
+
+    function uploadImage() {
+      var input = document.getElementById('imageUpload');
+      var file = input.files[0];
+      var reader = new FileReader();
+
+      reader.onloadend = function() {
+        var img = document.createElement('img');
+        img.src = reader.result;
+        document.getElementById('editor').appendChild(img);
+        makeResizable(img);
+      }
+
+      reader.readAsDataURL(file);
+    }
+
+    function makeResizable(img) {
+      interact(img)
+              .resizable({
+                edges: { left: true, right: true, bottom: true, top: true },
+                inertia: true,
+                preserveAspectRatio: true,
+                modifiers: [
+                  interact.modifiers.restrictSize({
+                    min: { width: 50, height: 50 }
+                  })
+                ]
+              })
+              .on('resizemove', function (event) {
+                var target = event.target;
+                var x = (parseFloat(target.getAttribute('data-x')) || 0);
+                var y = (parseFloat(target.getAttribute('data-y')) || 0);
+
+                target.style.width  = event.rect.width + 'px';
+                target.style.height = event.rect.height + 'px';
+
+                x += event.deltaRect.left;
+                y += event.deltaRect.top;
+
+                target.style.webkitTransform = target.style.transform =
+                        'translate(' + x + 'px,' + y + 'px)';
+
+                target.setAttribute('data-x', x);
+                target.setAttribute('data-y', y);
+              });
+    }
+
+    function createLink() {
+      var linkText = document.getElementById('linkText').value;
+      var linkURL = document.getElementById('linkURL').value;
+
+      var link = '<a href="' + linkURL + '">' + linkText + '</a>';
+      document.execCommand('insertHTML', false, link);
+
+      $('#linkModal').modal('hide');
+    }
+
+
+    function saveContent() {
+      var content = document.getElementById('editor').innerHTML;
+      document.getElementById('savedContent').value = content;
+    }
+
+    function changeFontSize(size) {
+      document.execCommand('fontSize', false, size);
+    }
+  </script>
+</div>
+</html>

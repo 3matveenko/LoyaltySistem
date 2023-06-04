@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/main.html">
+<div layout:fragment="main-content">
+
+    <div class="card-header">
+        <h3 class="card-title"></h3>
+    </div>
+    <div class="card card-primary">
+        <div class="card-header d-flex justify-content-between">
+            <h3 class="card-title">Уведомления</h3>
+            <div class="ml-auto"><a th:href="'/push/create'">Создать новое уведомление</a></div>
+        </div>
+        <div class="card-body">
+            <div class="row justify-content">
+                <div th:each=" push : ${messages}">
+                    <div th:text="${push.title}"></div>
+                    <div th:utext="${push.text}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</html>

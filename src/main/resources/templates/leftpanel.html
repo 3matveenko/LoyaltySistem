@@ -25,6 +25,11 @@
                         <p>Компания</p>
                     </a>
                 </li>
+                <li class="nav-item" sec:authorize="hasAnyRole('ROLE_USER')">
+                    <a href="/push/" class="nav-link">
+                        <p>Push Уведомления</p>
+                    </a>
+                </li>
             </ul>
         </nav>
     </div>
