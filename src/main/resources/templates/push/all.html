@@ -13,9 +13,11 @@
         </div>
         <div class="card-body">
             <div class="row justify-content">
-                <div th:each=" push : ${messages}">
+                <div class="col-md-4 mb-3" th:each=" push : ${messages}">
+                    <a th:href="'/push/details/'+${push.id}">
                     <div th:text="${push.title}"></div>
                     <div th:utext="${push.text}"></div>
+                    </a>
                 </div>
             </div>
         </div>

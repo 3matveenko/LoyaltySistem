@@ -29,31 +29,18 @@ public class UserController {
         model.addAttribute("users", userService.allUsers());
         return "user/all";
     }
-
+    @GetMapping(value = "/details/{userId}")
+    public String details(
+            Model model,
+            @PathVariable("userId") Long userId){
+        model.addAttribute("user", userService.getUserById(userId));
+        return "user/details";
+    }
     @GetMapping(value = "/create")
     public String create(Model model){
         model.addAttribute("companies", companyService.allCompany());
         return "user/create";
     }
-
-    @GetMapping(value = "/update/{userId}")
-    public String update(Model model,
-                         @PathVariable("userId") Long userId){
-        model.addAttribute("companies", companyService.allCompany());
-        model.addAttribute("user", userService.getUserById(userId));
-        return "user/update";
-    }
-
-    @PostMapping(value = "/update")
-    public String updateUser(
-                         @RequestParam("userId") Long userId,
-                         @RequestParam("name") String userName,
-                         @RequestParam("email") String email,
-                         @RequestParam("company") Long companyId){
-        userService.update(userId,userName,email,companyId);
-        return "redirect:/user/";
-    }
-
     @PostMapping(value = "/create")
     public String create(
             Model model,
@@ -62,7 +49,7 @@ public class UserController {
             @RequestParam("email") String email,
             @RequestParam("password") String password,
             @RequestParam("repeat") String repeat
-            ){
+    ){
         Boolean result = userService.create(userName,companyId,email, password, repeat);
         model.addAttribute("companies", companyService.allCompany());
 
@@ -77,15 +64,28 @@ public class UserController {
             return "redirect:/user/";
         }
     }
-
-    @GetMapping(value = "/details/{userId}")
-    public String details(
-            Model model,
-            @PathVariable("userId") Long userId){
+    @GetMapping(value = "/update/{userId}")
+    public String update(Model model,
+                         @PathVariable("userId") Long userId){
+        model.addAttribute("companies", companyService.allCompany());
         model.addAttribute("user", userService.getUserById(userId));
-        return "user/details";
+        return "user/update";
     }
-
+    @PostMapping(value = "/update")
+    public String updateUser(
+                         @RequestParam("userId") Long userId,
+                         @RequestParam("name") String userName,
+                         @RequestParam("email") String email,
+                         @RequestParam("company") Long companyId){
+        userService.update(userId,userName,email,companyId);
+        return "redirect:/user/";
+    }
+    @GetMapping(value = "/delete/{userId}")
+    public String delete(
+            @PathVariable("userId") Long userId){
+        userService.delete(userId);
+        return "redirect:/user/";
+    }
     @GetMapping(value = "/personal")
     public String personal(
             HttpSession session,
@@ -93,14 +93,12 @@ public class UserController {
        Long id =(Long) session.getAttribute("userID");
         return "redirect:details/"+id;
     }
-
     @GetMapping(value = "/change/{userId}")
     public String change(Model model,
             @PathVariable("userId") Long userId){
         model.addAttribute("userId", userId);
         return "user/change";
     }
-
     @PostMapping(value = "/change")
     public String changePassword(
             Model model,
@@ -113,12 +111,5 @@ public class UserController {
     String response[] = {"repeat","oldPass","ok"};
     model.addAttribute(response[result], true);
     return "user/change";
-    }
-
-    @GetMapping(value = "/delete/{userId}")
-    public String delete(
-            @PathVariable("userId") Long userId){
-        userService.delete(userId);
-        return "redirect:/user/";
     }
   }

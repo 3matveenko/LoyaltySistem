@@ -35,6 +35,15 @@ public class CompanyController {
     model.addAttribute("companies", companyService.allCompany());
     return "company/all";
     }
+    @GetMapping(value = "/details/{companyId}")
+    public String detailsCompany(Model model,
+                                 @PathVariable("companyId") Long companyId){
+        model.addAttribute("customers", customerService.getCustomersByCompanyId(companyId));
+        model.addAttribute("cardtocompany", companyService.cardToCompany(companyId));
+        model.addAttribute("countCard", cardService.getCount(companyId));
+        model.addAttribute("company", companyService.findById(companyId));
+        return "/company/details";
+    }
 
     @GetMapping(value = "/create")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
@@ -54,29 +63,17 @@ public class CompanyController {
         companyService.update(company);
         return "redirect:/company/details/"+company.getId();
     }
-
-    @GetMapping(value = "/delete/{companyId}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public String deleteCompany(@PathVariable("companyId") Long companyId){
-        companyService.delete(companyId);
-        return "redirect:/company/";
-    }
-
-    @GetMapping(value = "/details/{companyId}")
-    public String detailsCompany(Model model,
-            @PathVariable("companyId") Long companyId){
-        model.addAttribute("customers", customerService.getCustomersByCompanyId(companyId));
-        model.addAttribute("cardtocompany", companyService.cardToCompany(companyId));
-        model.addAttribute("countCard", cardService.getCount(companyId));
-        model.addAttribute("company", companyService.findById(companyId));
-        return "/company/details";
-    }
-
     @GetMapping(value = "/update/{companyId}")
     public String updateCompany(Model model,
                                  @PathVariable("companyId") Long companyId){
         model.addAttribute("company", companyService.findById(companyId));
         return "/company/update";
+    }
+    @GetMapping(value = "/delete/{companyId}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public String deleteCompany(@PathVariable("companyId") Long companyId){
+        companyService.delete(companyId);
+        return "redirect:/company/";
     }
 
     @GetMapping(value = "/mycompany")

@@ -52,6 +52,7 @@ public class CardService {
         card.setTypeOfDiscount(typeOfDiscount);
         TypeOfCard typeOfCard = typeOfCardService.getTypeOfCardById(idTypeofCard);
         card.setTypeOfCard(typeOfCard);
+        card.setStatus(true);
         cardRepository.save(card);
         Company company = companyService.findById(idCompany);
         List<Card> cards = company.getCards();

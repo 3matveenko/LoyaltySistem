@@ -113,15 +113,27 @@
                             <td>Электронная поочта</td>
                             <td>Номер Телефона</td>
                             <td>День рождения</td>
+                            <td>Компании клиента</td>
+                            <td>Карточки клиента</td>
                         </tr>
                         </thead>
                         <tbody th:each="customer : ${customers}" >
                         <tr>
                             <td th:text="${customer.id}"></td>
                             <td th:text="${customer.name}"></td>
-                            <td th:text="${customer.mail}"></td>
+                            <td th:text="${customer.email}"></td>
                             <td th:text="${customer.phoneNumber}"></td>
                             <td th:text="${#dates.format(customer.birthday, 'dd-MM-yyyy')}"></td>
+                            <td>
+                                <select>
+                                    <option th:each="comp : ${customer.getCompany()}" th:text="${comp.companyName}"></option>
+                                </select>
+                            </td>
+                            <td>
+                                <select>
+                                    <option th:each="c : ${customer.getCards()}" th:text="${c.name}"></option>
+                                </select>
+                            </td>
                         </tr>
                         </tbody>
                     </table>

@@ -21,7 +21,13 @@ public class PushController {
         model.addAttribute("messages", pushService.getAllByCompanyId());
         return "push/all";
     }
-
+    @GetMapping(value = "/details/{pushId}")
+    public String details(
+            Model model,
+            @PathVariable("pushId") Long pushId){
+        model.addAttribute("push", pushService.getPushById(pushId));
+        return "push/details";
+    }
     @GetMapping(value = "/create")
     public String create(){
         return "push/create";
@@ -31,6 +37,28 @@ public class PushController {
     public String add(@RequestParam("text") String text,
                       @RequestParam("title") String title){
     pushService.createPush(title,text);
-        return "redirect:push/";
+        return "redirect:/push/";
     }
+    @GetMapping(value = "update/{pushId}")
+    public String update(
+            Model model,
+            @PathVariable("pushId") Long pushId){
+        model.addAttribute("push", pushService.getPushById(pushId));
+        return "push/update";
+    }
+    @PostMapping(value = "/update")
+    public String update(
+            @RequestParam("id") Long pushId,
+            @RequestParam("text") String text,
+            @RequestParam("title") String title){
+        pushService.updatePush(pushId,title,text);
+        return "redirect:/push/";
+    }
+    @GetMapping(value = "delete/{pushId}")
+    public String delete(
+            @PathVariable("pushId") Long pushId){
+        pushService.deletePushById(pushId);
+        return "redirect:/push/";
+    }
+
 }

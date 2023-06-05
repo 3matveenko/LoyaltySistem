@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ * Вспомогательный класс для создания поля id для всех моделей
+ */
 @Getter
 @Setter
 @MappedSuperclass

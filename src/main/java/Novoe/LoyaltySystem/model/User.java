@@ -10,25 +10,47 @@ import java.util.Collection;
 import java.util.List;
 
 
+/**
+ * класс админов компаний
+ */
 @Getter
 @Setter
 @Entity
 @Table(name="t_users")
 public class User extends BaseEntity implements UserDetails {
+
+    /**
+     * Имя админа
+     */
     @Column(name = "user_name")
     private String name;
 
+    /**
+     * пароль учетной записи
+     */
     @Column(name = "password")
     private String password;
 
+    /**
+     * почта учетной записи(используется для авторизации)
+     */
     @Column(name = "email")
     private String email;
 
+    /**
+     * Компания админа
+     */
     @OneToOne
     private Company company;
 
+    /**
+     * роль. В приложении есть 2 роли.
+     * Admin: создает всех админов,компании.
+     * User: ведет учетную запись своей компании
+     */
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Permission> permissions;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

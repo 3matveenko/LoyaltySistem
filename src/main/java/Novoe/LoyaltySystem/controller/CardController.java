@@ -12,6 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+/**
+ * Контроллер карточек компании
+ */
 @Controller
 @PreAuthorize("isAuthenticated()")
 @RequestMapping(value = "/card")
@@ -26,15 +29,33 @@ public class CardController {
     @Autowired
     TypeOfCardService typeOfCardService;
 
-    @GetMapping(value = "/create/{companyId}")
-    public String create(
+    /**
+     * детали карты
+     * @param companyId
+     * @param cardId
+     * @param model
+     * @return details.html
+     */
+    @GetMapping(value = "/details/{cardId}/{companyId}")
+    public String details(
             @PathVariable("companyId") Long companyId,
+            @PathVariable("cardId") Long cardId,
             Model model){
-        model.addAttribute("allTypeOfCard", typeOfCardService.allTypeOfCard());
-        model.addAttribute("id", companyId);
-        return "card/create";
+        model.addAttribute("companyId",companyId);
+        model.addAttribute("card", cardService.findByid(cardId));
+        return "card/details";
     }
 
+    /**
+     * Метод создает карту компании
+     * @param idCompany
+     * @param file
+     * @param name
+     * @param typeOfDiscount
+     * @param typeOfCard
+     * @return Возвращает на страницу компании
+     * @throws IOException
+     */
     @PostMapping(value = "/add")
     public String createCard(
             @RequestParam("id_company") Long idCompany,
@@ -46,16 +67,13 @@ public class CardController {
         return "redirect:/company/details/"+idCompany;
     }
 
-    @GetMapping(value = "/details/{cardId}/{companyId}")
-    public String details(
-            @PathVariable("companyId") Long companyId,
-            @PathVariable("cardId") Long cardId,
-            Model model){
-        model.addAttribute("companyId",companyId);
-        model.addAttribute("card", cardService.findByid(cardId));
-        return "card/details";
-    }
-
+    /**
+     * вызов страницы обновления карты
+     * @param companyId
+     * @param cardId
+     * @param model
+     * @return возвращает страницу обновления карты
+     */
     @GetMapping(value = "/update/{cardId}/{companyId}")
     public String update(
             @PathVariable("companyId") Long companyId,
@@ -67,6 +85,17 @@ public class CardController {
         return "card/update";
     }
 
+    /**
+     * метод обновления карты
+     * @param idCard
+     * @param idCompany
+     * @param file - дизайн карточки
+     * @param name
+     * @param typeOfDiscount
+     * @param typeOfCard
+     * @return
+     * @throws IOException
+     */
     @PostMapping(value = "/update")
     public String update(
             @RequestParam("id_card") String idCard,
@@ -79,6 +108,27 @@ public class CardController {
         return "redirect:/company/details/"+idCompany;
     }
 
+    /**
+     * метод вызова страницы создания карты
+     * @param companyId
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "/create/{companyId}")
+    public String create(
+            @PathVariable("companyId") Long companyId,
+            Model model){
+        model.addAttribute("allTypeOfCard", typeOfCardService.allTypeOfCard());
+        model.addAttribute("id", companyId);
+        return "card/create";
+    }
+
+    /**
+     * Метод удаления карты
+     * @param idCompany
+     * @param cardId
+     * @return
+     */
     @PostMapping(value = "/delete")
     public String delete(
             @RequestParam("companyId") Long idCompany,
@@ -87,6 +137,14 @@ public class CardController {
         return "redirect:/company/details/"+idCompany;
     }
 
+    /**
+     * метод изменения статуса карты (акнтивна/не активна)
+     * @param model
+     * @param id
+     * @param status
+     * @param idCompany
+     * @return
+     */
     @PostMapping(value = "/update_status")
     public String updateStatus(
             Model model,

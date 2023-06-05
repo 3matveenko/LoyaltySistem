@@ -32,4 +32,19 @@ public class PushService {
         pushRepository.save(push);
     }
 
+    public Push getPushById(Long pushId){
+       return pushRepository.findById(pushId).orElseThrow();
+    }
+
+    public void deletePushById(Long pushId){
+        pushRepository.delete(getPushById(pushId));
+    }
+
+    public void updatePush(Long pushId, String title, String text){
+        Push push = getPushById(pushId);
+        push.setTitle(title);
+        push.setText(text);
+        pushRepository.save(push);
+    }
+
 }
