@@ -52,12 +52,6 @@ public class Company extends BaseEntity{
     private String token;
 
     /**
-     * Админ компании
-     */
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<User> users;
-
-    /**
      * Карточки компании
      */
     @OneToMany(fetch = FetchType.EAGER)

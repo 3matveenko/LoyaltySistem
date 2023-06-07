@@ -91,7 +91,11 @@ public class UserController {
             HttpSession session,
             Model model){
        Long id =(Long) session.getAttribute("userID");
-        return "redirect:details/"+id;
+       if(id!=null) {
+           return "redirect:details/" + id;
+       } else {
+           return "redirect:/";
+       }
     }
     @GetMapping(value = "/change/{userId}")
     public String change(Model model,

@@ -64,7 +64,7 @@ public class CardController {
             @RequestParam("typeOfDiscount") String typeOfDiscount,
             @RequestParam("typeOfCard") Long typeOfCard) throws IOException {
         cardService.createCard(file, name, typeOfDiscount, idCompany, typeOfCard);
-        return "redirect:/company/details/"+idCompany;
+        return "redirect:/company/details/"+idCompany+"?cardstab";
     }
 
     /**
@@ -105,7 +105,7 @@ public class CardController {
             @RequestParam("typeOfDiscount") String typeOfDiscount,
             @RequestParam("typeOfCard") Long typeOfCard) throws IOException {
         cardService.update(file, name, typeOfDiscount,Long.parseLong(idCard), typeOfCard);
-        return "redirect:/company/details/"+idCompany;
+        return "redirect:/company/details/"+idCompany+"?cardstab";
     }
 
     /**
@@ -134,7 +134,7 @@ public class CardController {
             @RequestParam("companyId") Long idCompany,
             @RequestParam("cardId") Long cardId){
         cardService.delete(cardId, idCompany);
-        return "redirect:/company/details/"+idCompany;
+        return "redirect:/company/details/"+idCompany+"?cardstab";
     }
 
     /**

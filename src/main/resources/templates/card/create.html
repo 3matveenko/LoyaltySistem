@@ -2,50 +2,136 @@
 <html lang="en"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/main.html">
 <div layout:fragment="main-content">
-  <div class="card card-primary">
-    <div class="card-header">
-      <h3 class="card-title">Создать новую карточку</h3>
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title">Создать новую карточку</h3>
+        </div>
+        <div class="card-body">
+            <form th:action="@{'/card/add'}" method="post" enctype="multipart/form-data" id="Form">
+                <input type="hidden" th:value="${id}" name="id_company">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="exampleInputname">Название карты</label>
+                            <input name="name" type="text" class="form-control" id="exampleInputname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="typeOfCard">Тип карты</label>
+                            <select name="typeOfCard" type="text" class="form-control" id="typeOfCard"
+                                    onchange="showDiv()">
+                                <option value="error">- - - не выбрано - - -</option>
+                                <option th:each="type : ${allTypeOfCard}" th:value="${type.id}"
+                                        th:text="${type.name}"></option>
+                            </select>
+                            <div id="passwordMismatch" style="display: none; color: red">
+                                Вы не выбрали тип карты!
+                            </div>
+                        </div>
+
+                        <div id="div1" style="display: none;">
+                            <div class="form-group">
+                                <label for="typeOfDiscount" title="Введите количество процентов">Cкидкa</label>
+                                <input name="typeOfDiscount" type="number" class="form-control" id="typeOfDiscount"
+                                       min="1" max="100">
+                            </div>
+                        </div>
+                        <div id="div2" style="display: none;">
+                            <div class="form-group">
+                                <label for="typeOfDiscount" title="Введите количество процентов">Какую часть от чека
+                                    можно оплатить бонусами?</label>
+                                <input type="number" class="form-control" min="1" max="100">
+                            </div>
+                            <div class="form-group">
+                                <label for="bonusplus" title="Введите количество процентов">Как начислять
+                                    бонусы?</label>
+                                <select id="bonusplus" class="form-control" onchange="showBonus(); showDiv()">
+                                    <option value="error">- - - не выбрано - - -</option>
+                                    <option value="1">За всю сумму оплаченного чека</option>
+                                    <option value="2">За каждые полные (х)тг. Покупки</option>
+                                </select>
+                            </div>
+                            <div style="display: none;" id="bon1" class="form-group">
+                                <div class="form-group">
+                                    <label for="typeOfDiscount" title="Введите количество процентов">Сколько процентов
+                                        бонусов начислять от суммы чека?</label>
+                                    <input type="number" class="form-control" min="1" max="100">
+                                </div>
+                            </div>
+                            <div style="display: none;" id="bon2" >
+                                <div class="form-group">
+                                    <label for="typeOfDiscount">Укажите сумму интервала в тенге</label>
+                                    <input type="number" class="form-control" min="1">
+                                </div>
+                                <div class="form-group">
+                                    <label for="typeOfDiscount">Сколько начислять бонусов за достижение интервала?</label>
+                                    <input type="number" class="form-control" min="1">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div id="div3" style="display: none;">
+                            <div class="form-group">
+                                <label for="typeOfDiscount">Полное наименование товара или ключевое слово в названии товара.</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="typeOfDiscount">Сколько нужно купить, чтобы получить бесплатный товар?</label>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="exampleInputFile">Загрузить картинку</label>
+                            <div class="input-group">
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="exampleInputFile" name="file"
+                                           accept=".jpeg" onchange="showPreview(event)">
+                                    <label class="custom-file-label" for="exampleInputFile">Формат изображения 860*540
+                                        (.jpeg)</label>
+                                </div>
+                                <div id="imagePreview"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Создать</button>
+                </div>
+            </form>
+        </div>
     </div>
-      <div class="card-body">
-    <form th:action="@{'/card/add'}" method="post" enctype="multipart/form-data">
-        <input type="hidden" th:value="${id}" name="id_company">
-        <div class="row">
-          <div class="col">
-            <div class="form-group">
-              <label for="exampleInputname">Имя</label>
-              <input  name="name" type="text" class="form-control" id="exampleInputname" required>
-            </div>
-              <div class="form-group">
-                  <label for="exampleInputFile">Загрузить картинку</label>
-                  <div class="input-group">
-                      <div class="custom-file">
-                          <input type="file" class="custom-file-input" id="exampleInputFile" name="file" accept=".jpeg" onchange="showPreview(event)">
-                          <label class="custom-file-label" for="exampleInputFile">Формат изображения 860*540 (.jpeg)</label>
-                      </div>
-                  </div>
-              </div>
-              <div id="imagePreview"></div>
-          </div>
-          <div class="col">
-            <div class="form-group">
-              <label for="typeOfDiscount">Формула рассчета</label>
-              <input name="typeOfDiscount" type="text" class="form-control" id="typeOfDiscount" placeholder="" >
-            </div>
-              <div class="form-group">
-                  <label for="typeOfCard">Тип карты</label>
-                  <select name="typeOfCard" type="text" class="form-control" id="typeOfCard">
-                      <option th:each="type : ${allTypeOfCard}" th:value="${type.id}" th:text="${type.name}"></option>
-                  </select>
-              </div>
-          </div>
-      </div>
-      <div class="card-footer">
-        <button type="submit" class="btn btn-primary">Создать</button>
-      </div>
-    </form>
-  </div>
-  </div>
+
+
     <script>
+        function showBonus() {
+            var selectValue = document.getElementById("bonusplus").value;
+
+            // Скрываем все div-элементы
+            var divElements = document.querySelectorAll("div[id^='bon']");
+            for (var i = 0; i < divElements.length; i++) {
+                divElements[i].style.display = "none";
+            }
+
+            // Отображаем выбранный div
+            var selectedDiv = document.getElementById("bon" + selectValue);
+            selectedDiv.style.display = "block";
+        }
+
+        function showDiv() {
+            var selectValue = document.getElementById("typeOfCard").value;
+
+            // Скрываем все div-элементы
+            var divElements = document.querySelectorAll("div[id^='div']");
+            for (var i = 0; i < divElements.length; i++) {
+                divElements[i].style.display = "none";
+            }
+
+            // Отображаем выбранный div
+            var selectedDiv = document.getElementById("div" + selectValue);
+            selectedDiv.style.display = "block";
+        }
+
         function showPreview(event) {
             var input = event.target;
             if (input.files && input.files[0]) {
@@ -57,6 +143,18 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
+
+        document.getElementById('Form').addEventListener('submit', function (event) {
+            var typeOfCard = document.getElementById('typeOfCard');
+            var passwordMismatchDiv = document.getElementById('passwordMismatch');
+
+            if (typeOfCard.value == "error") {
+                event.preventDefault();
+                passwordMismatchDiv.style.display = 'block';
+            } else {
+                passwordMismatchDiv.style.display = 'none';
+            }
+        });
     </script>
 </div>
 </html>
