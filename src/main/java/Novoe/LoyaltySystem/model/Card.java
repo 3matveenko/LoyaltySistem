@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Класс карточки компании
+ * Класс шаблона карты
  */
 @Getter
 @Setter

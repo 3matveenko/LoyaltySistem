@@ -34,6 +34,8 @@ public class SecurityConfig {
                 .userDetailsService(securityUserService())
                 .passwordEncoder(passwordEncoder());
 
+        http.securityMatcher("list/").anonymous();
+
         http.formLogin()
                 .loginPage("/login")
                 .failureUrl("/login?error")

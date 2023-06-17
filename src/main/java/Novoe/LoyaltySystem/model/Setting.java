@@ -18,7 +18,7 @@ public class Setting extends BaseEntity{
     /**
      * наименование настройки
      */
-    @Column(name = "key")
+    @Column(name = "this_key")
     private String key;
 
     /**
