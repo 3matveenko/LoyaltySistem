@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .userDetailsService(securityUserService())
                 .passwordEncoder(passwordEncoder());
 
-        http.securityMatcher("list/").anonymous();
+
 
         http.formLogin()
                 .loginPage("/login")
@@ -47,6 +47,15 @@ public class SecurityConfig {
         http.logout()
                 .logoutUrl("/exit")
                 .logoutSuccessUrl("/login");
+
+        http
+                .securityMatchers((matchers) -> matchers
+                        .requestMatchers("/app","/v3/api-docs/**","/swagger-ui/**",      "/api/v1/auth/**",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs.yaml",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html")
+                );
 
         return http.build();
     }
