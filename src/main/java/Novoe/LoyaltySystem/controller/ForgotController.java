@@ -1,6 +1,6 @@
 package Novoe.LoyaltySystem.controller;
 
-import Novoe.LoyaltySystem.model.Status;
+import Novoe.LoyaltySystem.model.enums.Status;
 import Novoe.LoyaltySystem.model.User;
 import Novoe.LoyaltySystem.service.ForgotService;
 import Novoe.LoyaltySystem.service.UserService;

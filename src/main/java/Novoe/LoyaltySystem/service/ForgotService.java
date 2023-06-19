@@ -2,7 +2,7 @@ package Novoe.LoyaltySystem.service;
 
 import Novoe.LoyaltySystem.model.Forgot;
 import Novoe.LoyaltySystem.model.Setting;
-import Novoe.LoyaltySystem.model.Status;
+import Novoe.LoyaltySystem.model.enums.Status;
 import Novoe.LoyaltySystem.repository.ForgotRepository;
 import Novoe.LoyaltySystem.repository.SettingRepository;
 import org.springframework.beans.factory.annotation.Autowired;

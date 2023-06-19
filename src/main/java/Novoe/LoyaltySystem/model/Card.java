@@ -26,10 +26,10 @@ public class Card extends BaseEntity{
     private String image;
 
     /**
-     * Тип скидки
+     * Описание карты, кторое видит клиент в приложении.
      */
-    @Column(name = "type_of_discount")
-    private String typeOfDiscount;
+    @Column(name = "description")
+    private String description;
 
     /**
      * Статус карты (активна или нет)
@@ -43,4 +43,9 @@ public class Card extends BaseEntity{
     @OneToOne(fetch = FetchType.EAGER)
     private TypeOfCard typeOfCard;
 
+    /**
+     * Тип скидки
+     */
+    @Column(name = "type_of_discount")
+    private String typeOfDiscount;
 }

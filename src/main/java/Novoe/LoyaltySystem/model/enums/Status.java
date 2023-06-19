@@ -1,4 +1,4 @@
-package Novoe.LoyaltySystem.model;
+package Novoe.LoyaltySystem.model.enums;
 
 import lombok.Getter;
 

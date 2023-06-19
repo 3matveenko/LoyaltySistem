@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name="t_customers")
-public class Сustomer extends BaseEntity{
+public class Customer extends BaseEntity{
 
     /**
      * ФИО клиента
@@ -39,6 +39,12 @@ public class Сustomer extends BaseEntity{
      */
     @Column(name = "birthday")
     private Date birthday;
+
+    /**
+     * Токен авторизации
+     */
+    @Column(name = "token")
+    private String token;
 
     /**
      * карточки клиента
