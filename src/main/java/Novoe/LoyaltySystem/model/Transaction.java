@@ -51,4 +51,11 @@ public class Transaction extends BaseEntity{
     @Column(name = "order_out")
     @JdbcTypeCode(SqlTypes.JSON)
     private String orderOut;
+
+    /**
+     * Если бонус начислялся,то int>0.
+     * Еслс бонус списывался, то int<0.
+     */
+    @Column(name = "amount")
+    private int amount;
 }

@@ -20,7 +20,7 @@ public class CompanyService {
     }
 
 
-    public List<Company> allCompany(){
+    public List<Company> getAllCompany(){
     return companyRepository.findAll();
     }
 

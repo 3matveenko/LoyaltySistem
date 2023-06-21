@@ -41,6 +41,11 @@ public class HomeController {
     }
 
 
+    //удалить
+    @GetMapping(value = "/boots")
+    public String bootstrap(){
+        return "bootstrap";
+    }
 
 }
 

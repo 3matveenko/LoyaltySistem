@@ -52,6 +52,12 @@ public class Company extends BaseEntity{
     private String token;
 
     /**
+     * Город организации.
+     */
+    @Column(name = "city")
+    private String city;
+
+    /**
      * Карточки компании
      */
     @OneToMany(fetch = FetchType.EAGER)

@@ -52,10 +52,4 @@ public class Customer extends BaseEntity{
     @OneToMany
     private List<CardItem> cardItems;
 
-    /**
-     * компании клиента
-     */
-    @OneToMany
-    private List<Company> company;
-
 }

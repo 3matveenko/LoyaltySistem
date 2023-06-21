@@ -10,6 +10,11 @@
         </div>
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
+                    <a href="/customer/" class="nav-link">
+                        <p>Клиенты</p>
+                    </a>
+                </li>
                 <li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN')">
                     <a href="/company/" class="nav-link">
                         <p>Компании</p>
@@ -17,7 +22,7 @@
                 </li>
                 <li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN')">
                     <a href="/user/" class="nav-link">
-                        <p>Пользователи</p>
+                        <p>Администраторы</p>
                     </a>
                 </li>
                 <li class="nav-item" sec:authorize="hasAnyRole('ROLE_USER')">

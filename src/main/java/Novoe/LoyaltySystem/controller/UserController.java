@@ -38,7 +38,7 @@ public class UserController {
     }
     @GetMapping(value = "/create")
     public String create(Model model){
-        model.addAttribute("companies", companyService.allCompany());
+        model.addAttribute("companies", companyService.getAllCompany());
         return "user/create";
     }
     @PostMapping(value = "/create")
@@ -51,7 +51,7 @@ public class UserController {
             @RequestParam("repeat") String repeat
     ){
         Boolean result = userService.create(userName,companyId,email, password, repeat);
-        model.addAttribute("companies", companyService.allCompany());
+        model.addAttribute("companies", companyService.getAllCompany());
 
         if(result==null){
             model.addAttribute("repeat", true);
@@ -67,7 +67,7 @@ public class UserController {
     @GetMapping(value = "/update/{userId}")
     public String update(Model model,
                          @PathVariable("userId") Long userId){
-        model.addAttribute("companies", companyService.allCompany());
+        model.addAttribute("companies", companyService.getAllCompany());
         model.addAttribute("user", userService.getUserById(userId));
         return "user/update";
     }

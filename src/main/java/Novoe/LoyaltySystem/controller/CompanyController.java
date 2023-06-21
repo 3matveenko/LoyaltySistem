@@ -31,8 +31,8 @@ public class CompanyController {
 
     @GetMapping(value = "/")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public String allCompany(Model model){
-    model.addAttribute("companies", companyService.allCompany());
+    public String getAllCompany(Model model){
+    model.addAttribute("companies", companyService.getAllCompany());
     return "company/all";
     }
     @GetMapping(value = "/details/{companyId}")

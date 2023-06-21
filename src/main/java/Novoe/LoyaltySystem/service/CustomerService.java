@@ -1,24 +1,17 @@
 package Novoe.LoyaltySystem.service;
 
+import Novoe.LoyaltySystem.model.Company;
 import Novoe.LoyaltySystem.model.Customer;
-import Novoe.LoyaltySystem.model.enums.ErrorHttp;
 import Novoe.LoyaltySystem.repository.CustomerRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.v3.core.util.Json;
-import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.ErrorResponse;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import static Novoe.LoyaltySystem.model.enums.ErrorHttp.ERROR_PHONE_NUMBER;
 
 @Service
 public class CustomerService {
@@ -29,8 +22,11 @@ public class CustomerService {
     @Autowired
     CompanyService companyService;
 
+    public List<Customer> getAllCustomers(){
+        return customerRepository.findAll();
+    }
     public List<Customer> getCustomersByCompanyId(Long companyId){
-       return customerRepository.findAllByCompany(companyService.findById(companyId));
+        return customerRepository.findCustomerIdsByCompanyId(companyId);
     }
 
     public Optional<Customer> findCustomerByPhone(String phoneNumber){
@@ -51,5 +47,17 @@ public class CustomerService {
             return ResponseEntity.ok(token);
         }
         return ResponseEntity.status(460).body("Invalid phone number");
+    }
+
+    public String getAllCompany(){
+        List<Company> allCompany = companyService.getAllCompany();
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = null;
+        try {
+            json = objectMapper.writeValueAsString(allCompany);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return json;
     }
 }

@@ -9,5 +9,4 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Long> {
 
-
 }
