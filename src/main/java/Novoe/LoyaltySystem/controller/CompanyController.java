@@ -6,6 +6,8 @@ import Novoe.LoyaltySystem.service.CompanyService;
 import Novoe.LoyaltySystem.service.CustomerService;
 import Novoe.LoyaltySystem.service.UserService;
 import jakarta.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -29,6 +31,8 @@ public class CompanyController {
     @Autowired
     CustomerService customerService;
 
+    private static final Logger logger = LoggerFactory.getLogger(CompanyController.class);
+
     @GetMapping(value = "/")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public String getAllCompany(Model model){
@@ -39,9 +43,15 @@ public class CompanyController {
     public String detailsCompany(Model model,
                                  @PathVariable("companyId") Long companyId){
         model.addAttribute("customers", customerService.getCustomersByCompanyId(companyId));
-        model.addAttribute("cardtocompany", companyService.cardToCompany(companyId));
         model.addAttribute("countCard", cardService.getCount(companyId));
         model.addAttribute("company", companyService.findById(companyId));
+        try {
+            model.addAttribute("cardtocompany", companyService.cardToCompany(companyId));
+            logger.info("error");
+        } catch (Exception e) {
+            model.addAttribute("errorcompanyid", true);
+            logger.info("error");
+        }
         return "/company/details";
     }
 

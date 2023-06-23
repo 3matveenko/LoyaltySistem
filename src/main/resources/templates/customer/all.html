@@ -38,7 +38,7 @@
               <td th:onclick="'redirectToCustomerDetails(\'' + ${customer.id} + '\')'" style="cursor: pointer;"
                   th:text="${customer.email}"></td>
               <td th:onclick="'redirectToCustomerDetails(\'' + ${customer.id} + '\')'" style="cursor: pointer;"
-                  th:text="${customer.phoneNumber}"></td>
+                  th:text="${'+7'+customer.phoneNumber}"></td>
               <td th:onclick="'redirectToCustomerDetails(\'' + ${customer.id} + '\')'" style="cursor: pointer;"
                   th:text="${customer.birthday}"></td>
 
@@ -70,7 +70,7 @@
           </table>
           <script>
             function redirectToCustomerDetails(companyId) {
-              window.location.href = '/company/details/' + companyId;
+              window.location.href = '/customer/details/' + companyId;
             }
           </script>
         </div>

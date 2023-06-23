@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +23,14 @@ public class CustomerService {
     @Autowired
     CompanyService companyService;
 
+    public Customer findCustomerById(Long customerId) throws NotFoundException {
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        if(customer.isPresent()){
+            return customer.get();
+        } else {
+             throw new NotFoundException("not found");
+        }
+    }
     public List<Customer> getAllCustomers(){
         return customerRepository.findAll();
     }
