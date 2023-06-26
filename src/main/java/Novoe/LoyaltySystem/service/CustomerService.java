@@ -69,4 +69,10 @@ public class CustomerService {
         }
         return json;
     }
+
+    public void updateCustomer(Customer customer){
+        customer.setCardItems(findCustomerById(customer.getId()).getCardItems());
+        customer.setBirthday(findCustomerById(customer.getId()).getBirthday());
+        customerRepository.save(customer);
+    }
 }

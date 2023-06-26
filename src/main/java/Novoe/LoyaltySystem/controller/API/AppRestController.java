@@ -1,7 +1,7 @@
 package Novoe.LoyaltySystem.controller.API;
 
 
-import Novoe.LoyaltySystem.model.Company;
+import Novoe.LoyaltySystem.service.CardService;
 import Novoe.LoyaltySystem.service.CompanyService;
 import Novoe.LoyaltySystem.service.CustomerService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,6 +22,9 @@ public class AppRestController {
 
     @Autowired
     CompanyService companyService;
+
+    @Autowired
+    CardService cardService;
 
     @Operation(summary = "регистрация", description = "Номер телефона передается без кода страны только 10 цифр " +
             "Input: {\n" +
@@ -44,6 +47,13 @@ public class AppRestController {
     @GetMapping("/allcompany")
     public ResponseEntity<String> getAllCompany() {
         return ResponseEntity.ok(customerService.getAllCompany());
+    }
+
+    @Operation(summary = "Выдает список шаблонов по id компании.", description = "description")
+    @ApiResponse(responseCode = "200", description = "description")
+    @GetMapping("/card_by_company_id")
+    public ResponseEntity<String> cardByCompanyId() {
+        return ResponseEntity.ok(cardService.);
     }
 
 //    @Operation(summary = "Выдает список всех карт по id компании.", description = "description")
