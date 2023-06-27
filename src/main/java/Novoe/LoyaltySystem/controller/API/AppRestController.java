@@ -53,7 +53,8 @@ public class AppRestController {
     @ApiResponse(responseCode = "200", description = "description")
     @GetMapping("/card_by_company_id")
     public ResponseEntity<String> cardByCompanyId() {
-        return ResponseEntity.ok(cardService.);
+
+        return ResponseEntity.ok();
     }
 
 //    @Operation(summary = "Выдает список всех карт по id компании.", description = "description")

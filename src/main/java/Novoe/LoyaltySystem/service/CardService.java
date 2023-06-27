@@ -9,6 +9,7 @@ import Novoe.LoyaltySystem.repository.TypeOfCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.webjars.NotFoundException;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.nio.file.StandardCopyOption;
 import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -120,5 +122,7 @@ public class CardService {
         cardRepository.save(card);
     }
 
-    public
+    public List<Card> getCardByCompanyId(Long companyId) throws NotFoundException {
+        return companyService.getCompanyById(companyId).getCards();
+    }
 }

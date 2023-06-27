@@ -5,8 +5,10 @@ import Novoe.LoyaltySystem.model.Company;
 import Novoe.LoyaltySystem.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -15,6 +17,14 @@ public class CompanyService {
     @Autowired
     CompanyRepository companyRepository;
 
+    public Company getCompanyById(Long companyId) throws NotFoundException {
+        Optional<Company> company = companyRepository.findById(companyId);
+        if(company.isPresent()){
+            return company.get();
+        } else {
+            throw new NotFoundException("not found");
+        }
+    }
     public long getCount(){
        return companyRepository.count();
     }
@@ -52,5 +62,4 @@ public class CompanyService {
         Company company = companyRepository.findById(id).orElseThrow();
         return company.getCards();
     }
-
 }
