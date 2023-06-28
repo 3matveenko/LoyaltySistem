@@ -58,8 +58,12 @@ public class CompanyService {
         companyRepository.save(company);
     }
 
-    public List<Card> cardToCompany(Long id){
-        Company company = companyRepository.findById(id).orElseThrow();
+    /**
+     * @param companyId
+     * @return Выдает шаблоны карт.
+     */
+    public List<Card> getCardByCompanyId(Long companyId){
+        Company company = companyRepository.findById(companyId).orElseThrow();
         return company.getCards();
     }
 }

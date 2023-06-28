@@ -46,7 +46,7 @@ public class CompanyController {
         model.addAttribute("countCard", cardService.getCount(companyId));
         model.addAttribute("company", companyService.findById(companyId));
         try {
-            model.addAttribute("cardtocompany", companyService.cardToCompany(companyId));
+            model.addAttribute("cardtocompany", companyService.getCardByCompanyId(companyId));
             logger.info("error");
         } catch (Exception e) {
             model.addAttribute("errorcompanyid", true);

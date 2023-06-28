@@ -1,6 +1,7 @@
 package Novoe.LoyaltySystem.controller.API;
 
-
+import Novoe.LoyaltySystem.model.Company;
+import Novoe.LoyaltySystem.service.ApiService;
 import Novoe.LoyaltySystem.service.CardService;
 import Novoe.LoyaltySystem.service.CompanyService;
 import Novoe.LoyaltySystem.service.CustomerService;
@@ -26,6 +27,9 @@ public class AppRestController {
     @Autowired
     CardService cardService;
 
+    @Autowired
+    ApiService apiService;
+
     @Operation(summary = "регистрация", description = "Номер телефона передается без кода страны только 10 цифр " +
             "Input: {\n" +
             "  \"name\": \"Полное имя\",\n" +
@@ -46,15 +50,15 @@ public class AppRestController {
     @ApiResponse(responseCode = "200", description = "description")
     @GetMapping("/allcompany")
     public ResponseEntity<String> getAllCompany() {
-        return ResponseEntity.ok(customerService.getAllCompany());
+    return ResponseEntity.ok(apiService.toJson(companyService.getAllCompany()));
     }
 
-    @Operation(summary = "Выдает список шаблонов по id компании.", description = "description")
+    @Operation(summary = "Выдает список шаблонов карт по id компании.", description = "description")
     @ApiResponse(responseCode = "200", description = "description")
-    @GetMapping("/card_by_company_id")
-    public ResponseEntity<String> cardByCompanyId() {
-
-        return ResponseEntity.ok();
+    @GetMapping("/card_by_company_id/{companyId}")
+    public ResponseEntity<String> cardByCompanyId(
+            @PathVariable Long companyId) {
+        return ResponseEntity.ok(apiService.toJson(companyService.getCardByCompanyId(companyId)));
     }
 
 //    @Operation(summary = "Выдает список всех карт по id компании.", description = "description")
