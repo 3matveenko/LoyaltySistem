@@ -17,6 +17,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     Optional<Customer> findCustomerByPhoneNumber(String phoneNumber);
 
+    Optional<Customer> findCustomerByToken(String token);
 
     //проверить работоспособность
         @Query("SELECT c FROM Customer c JOIN c.cardItems ci JOIN ci.company co WHERE co.id = :companyId")

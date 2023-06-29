@@ -40,13 +40,6 @@ public class HomeController {
         return "login";
     }
 
-
-    //удалить
-    @GetMapping(value = "/boots")
-    public String bootstrap(){
-        return "bootstrap";
-    }
-
 }
 
 

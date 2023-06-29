@@ -18,10 +18,10 @@
                         <tr>
                             <td></td>
                             <td>№</td>
-                            <td>ФИО</td>
-                            <td>Электронная почта</td>
-                            <td>Номер телефона</td>
-                            <td>День рождения</td>
+                            <td>Компания</td>
+                            <td>Название шаблона</td>
+                            <td>Тип шаблона</td>
+                            <td>Статус</td>
                         </tr>
                         </thead>
                         <tbody th:each="carditem : ${carditems}" >
@@ -36,14 +36,14 @@
                             <td th:onclick="'redirectToCustomerDetails(\'' + ${carditem.id} + '\')'" style="cursor: pointer;"
                                 th:text="${carditem.getCompany().getCompanyName()}"></td>
                             <td th:onclick="'redirectToCustomerDetails(\'' + ${carditem.id} + '\')'" style="cursor: pointer;"
-                                th:text="${carditem.getCard().name}"></td>
+                                th:text="${carditem.getCard().getName()}"></td>
                             <td th:onclick="'redirectToCustomerDetails(\'' + ${carditem.id} + '\')'" style="cursor: pointer;"
-                                th:text="${carditem.getCard().getTypeOfCard()}"></td>
+                                th:text="${carditem.getCard().getTypeOfCard().getName()}"></td>
                             <td th:onclick="'redirectToCustomerDetails(\'' + ${carditem.id} + '\')'" style="cursor: pointer;"
                                 th:text="${carditem.getCard().isStatus() ? 'Активная' : 'не активная'}"></td>
 
                             <!-- Modal -->
-                            <div class="modal fade" th:id="'exampleModal' + ${customer.id}">
+                            <div class="modal fade" th:id="'exampleModal' + ${carditem.id}">
                                 <div class="modal-dialog">
                                     <div class="modal-content bg-danger">
                                         <div class="modal-header">
@@ -53,11 +53,11 @@
                                         </div>
                                         <div class="modal-body">
                                             <h3 class="text-center">Вы уверены, что хотите удалить компанию "
-                                                <span th:text="${customer.name}"></span>"?</h3>
+                                                <span></span>"?</h3>
                                         </div>
                                         <div class="modal-footer justify-content-between">
                                             <button type="button" class="btn btn-outline-light" data-dismiss="modal">Нет</button>
-                                            <a th:href="'/company/delete/' + ${customer.id}" class="btn btn-outline-light">Да, удалить</a>
+                                            <a th:href="'/company/delete/' + ${carditem.id}" class="btn btn-outline-light">Да, удалить</a>
                                         </div>
                                     </div>
                                     <!-- /.modal-content -->

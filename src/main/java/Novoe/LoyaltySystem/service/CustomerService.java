@@ -23,6 +23,9 @@ public class CustomerService {
     @Autowired
     CompanyService companyService;
 
+    public void saveCustomer(Customer customer){
+        customerRepository.save(customer);
+    }
     public Customer findCustomerById(Long customerId) throws NotFoundException {
         Optional<Customer> customer = customerRepository.findById(customerId);
         if(customer.isPresent()){
@@ -74,5 +77,14 @@ public class CustomerService {
         customer.setCardItems(findCustomerById(customer.getId()).getCardItems());
         customer.setBirthday(findCustomerById(customer.getId()).getBirthday());
         customerRepository.save(customer);
+    }
+
+    public Long getUserIdByToken(String token) throws NotFoundException{
+        Optional<Customer> customer = customerRepository.findCustomerByToken(token);
+       if(customer.isPresent()){
+          return customer.get().getId();
+       } else {
+           throw new NotFoundException("not found");
+       }
     }
 }

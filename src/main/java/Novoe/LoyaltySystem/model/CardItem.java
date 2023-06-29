@@ -29,5 +29,4 @@ public class CardItem extends BaseEntity{
     @OneToOne
     private Company company;
 
-    //id 13 символов
 }

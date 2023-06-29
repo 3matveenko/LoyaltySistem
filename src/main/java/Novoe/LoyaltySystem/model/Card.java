@@ -48,4 +48,6 @@ public class Card extends BaseEntity{
      */
     @Column(name = "type_of_discount")
     private String typeOfDiscount;
+
+
 }

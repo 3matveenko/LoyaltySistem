@@ -59,11 +59,21 @@ public class CompanyService {
     }
 
     /**
+     * Выдает шаблоны карт.
      * @param companyId
-     * @return Выдает шаблоны карт.
+     * @return List<Card>
      */
     public List<Card> getCardByCompanyId(Long companyId){
         Company company = companyRepository.findById(companyId).orElseThrow();
         return company.getCards();
+    }
+
+    /**
+     *
+     * @param cardId
+     * @return
+     */
+    public Optional<Company> getCompanyByCardId(Long cardId){
+       return companyRepository.findByCardId(cardId);
     }
 }
