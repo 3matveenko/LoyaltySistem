@@ -1,5 +1,6 @@
 package Novoe.LoyaltySystem.controller.API;
 
+import Novoe.LoyaltySystem.exception.ForbiddenException;
 import Novoe.LoyaltySystem.service.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,7 +48,7 @@ public class AppRestController {
 
 
     @Operation(summary = "Выдает список всех компаний.", description = "description")
-    @ApiResponse(responseCode = "200", description = "description")
+    @ApiResponse(responseCode = "200", description = "ок")
     @ApiResponse(responseCode = "403", description = "Не верный токен")
     @GetMapping("/allcompany")
     public ResponseEntity<String> getAllCompany(
@@ -63,7 +64,7 @@ public class AppRestController {
 
     @Operation(summary = "Выдает список шаблонов карт по id компании.", description = "" +
             "Output: [{\"id\":1,\"name\":\"name\",\"image\":null,\"description\":\"fff\",\"status\":true,\"typeOfCard\":{\"id\":1,\"name\":\"Скидочная\"},\"typeOfDiscount\":\"1\"}]")
-    @ApiResponse(responseCode = "200", description = "description")
+    @ApiResponse(responseCode = "200", description = "ок")
     @ApiResponse(responseCode = "403", description = "Не верный токен")
     @GetMapping("/card_by_company_id/{companyId}")
     public ResponseEntity<String> cardByCompanyId(
@@ -78,27 +79,31 @@ public class AppRestController {
     }
 
     @Operation(summary = "Создает карту по id шаблона.", description = "")
-    @ApiResponse(responseCode = "200", description = "description")
-    @ApiResponse(responseCode = "460", description = "Нет шаблона с таким id")
+    @ApiResponse(responseCode = "200", description = "ок")
     @ApiResponse(responseCode = "403", description = "Не верный токен")
+    @ApiResponse(responseCode = "460", description = "Нет шаблона с таким id")
+    @ApiResponse(responseCode = "461", description = "Такая карта уже подключена")
     @GetMapping("/create_card/{cardId}")
     public ResponseEntity<String> createCard(
             @RequestHeader("Authorization") String token,
             @PathVariable Long cardId) {
         try {
             Long customerId = customerService.getUserIdByToken(token);
-            return ResponseEntity.ok(apiService.toJson(cardItemService.createCardItemId(cardId,customerId)));
-        } catch (Exception e) {
-            if(e instanceof NotFoundException){
-                return ResponseEntity.status(403).body("Invalid token");
+            if(customerService.findCardByCustomerId(cardId,customerId)){
+                return ResponseEntity.ok(apiService.toJson(cardItemService.createCardItemId(cardId,customerId)));
             } else {
-                return ResponseEntity.status(460).body("Invalid id");
+                return ResponseEntity.status(461).body("This card is already connected");
             }
-
+        } catch (ForbiddenException e) {
+                return ResponseEntity.status(403).body("Invalid token");
+        } catch (NotFoundException e) {
+                return ResponseEntity.status(460).body("Invalid id");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Server exception");
         }
     }
 
-
+    
 }
 
 //    @Operation(summary = "Выдает список всех карт по id компании.", description = "description")

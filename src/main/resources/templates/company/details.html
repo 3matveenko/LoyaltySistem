@@ -15,7 +15,7 @@
                     <a class="nav-link active" id="custom-content-below-home-tab" data-toggle="pill" href="#custom-content-below-home" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Информация о компании</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="custom-content-below-profile-tab" data-toggle="pill" href="#custom-content-below-profile" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Карточки компании</a>
+                    <a class="nav-link" id="custom-content-below-profile-tab" data-toggle="pill" href="#custom-content-below-profile" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Шаблоны карт компании</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="custom-content-below-messages-tab" data-toggle="pill" href="#custom-content-below-messages" role="tab" aria-controls="custom-content-below-messages" aria-selected="false">Клиенты компании</a>
@@ -74,8 +74,8 @@
                         </div>
                         <div class="card card-primary">
                             <div class="card-header d-flex justify-content-between">
-                                <h3 class="card-title">Карточки компании</h3>
-                                <div class="ml-auto"><a th:href="'/card/create/'+${company.getId()}">Создать новую карточку</a></div>
+                                <h3 class="card-title">Шаблоны карт компании</h3>
+                                <div class="ml-auto"><a th:href="'/card/create/'+${company.getId()}">Создать новый шаблон</a></div>
                             </div>
                             <div class="card-body">
                                 <h2 class="text-center"></h2>
@@ -126,12 +126,12 @@
                             <td th:text="${#dates.format(customer.birthday, 'dd-MM-yyyy')}"></td>
                             <td>
                                 <select>
-                                    <option th:each="comp : ${customer.getCompany()}" th:text="${comp.companyName}"></option>
+<!--                                    <option th:each="comp : ${customer.getCompany()}" th:text="${comp.companyName}"></option>-->
                                 </select>
                             </td>
                             <td>
                                 <select>
-                                    <option th:each="c : ${customer.getCards()}" th:text="${c.name}"></option>
+<!--                                    <option th:each="c : ${customer.getCards()}" th:text="${c.name}"></option>-->
                                 </select>
                             </td>
                         </tr>

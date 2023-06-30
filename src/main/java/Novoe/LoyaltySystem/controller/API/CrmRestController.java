@@ -1,9 +1,15 @@
 package Novoe.LoyaltySystem.controller.API;
 
+import Novoe.LoyaltySystem.exception.ForbiddenException;
+import Novoe.LoyaltySystem.model.Company;
+import Novoe.LoyaltySystem.service.ApiService;
+import Novoe.LoyaltySystem.service.CompanyService;
+import Novoe.LoyaltySystem.service.TransactionService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,21 +19,33 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/crm")
 public class CrmRestController {
 
-    @Operation(summary = "регистрация", description = "Регистрация нового пользователя")
-    @ApiResponse(responseCode = "200", description = "Успешная регистрация")
-    @ApiResponse(responseCode = "401", description = "Такой клиент существует.")
-    @GetMapping("/")
-    public ResponseEntity<String> response(
-            @Parameter(description = "ФИО", example = "{\n" +
-                    "  \"name\": \"Полное имя\",\n" +
-                    "  \"email\": \"Электронная почта\",\n" +
-                    "  \"phoneNumber\": \"999999999\",\n" +
-                    "  \"birthday\": \"1999-01-01T00:00:00.000Z\"\n" +
-                    "}") @RequestBody String json
-    ){
+    @Autowired
+    CompanyService companyService;
 
-        return ResponseEntity.ok("Ok");
-//             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access Denied");
+    @Autowired
+    TransactionService transactionService;
+
+    @Autowired
+    ApiService apiService;
+
+    @Operation(summary = "Обрабатывает транзакцию", description = "")
+    @ApiResponse(responseCode = "200", description = "Успешная регистрация")
+    @ApiResponse(responseCode = "403", description = "Не верный токен.")
+    @PostMapping("/transaction")
+    public ResponseEntity<String> response(
+            @RequestHeader("Authorization") String token,
+            @RequestBody String transaction){
+        try {
+           Company company = companyService.getCompanyByToken(token);
+            return  ResponseEntity.ok(transactionService.makeTransaktion(transaction));
+
+        } catch (ForbiddenException e){
+            return ResponseEntity.status(403).body("Invalid token");
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

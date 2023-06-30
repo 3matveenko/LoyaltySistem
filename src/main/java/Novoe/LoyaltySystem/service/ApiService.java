@@ -34,24 +34,7 @@ public class ApiService extends AbService<ApiService> {
     }
 
 
-//    private AbService abService;
-//
-//    public ApiService(AbService abService) {
-//        this.abService = abService;
-//    }
-//
-//    public Object fromJson(String json, String ClassName) throws JsonProcessingException, ClassNotFoundException {
-//       return abService.fJson(json, ClassName);
-//    }
-//
-//    public Object toJson() throws JsonProcessingException, ClassNotFoundException {
-//        Company myObject = new Company();
-//        return abService.tJson(myObject);
- //   }
-//    public List<Object> toJsonn() throws JsonProcessingException, ClassNotFoundException {
-//        Company myObject = new Company();
-//        return abService.tJson(myObject);
-//    }
+
 
 
 }

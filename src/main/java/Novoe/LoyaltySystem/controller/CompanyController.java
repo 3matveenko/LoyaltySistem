@@ -47,12 +47,12 @@ public class CompanyController {
         model.addAttribute("company", companyService.findById(companyId));
         try {
             model.addAttribute("cardtocompany", companyService.getCardByCompanyId(companyId));
-            logger.info("error");
+           // logger.info("error");
         } catch (Exception e) {
             model.addAttribute("errorcompanyid", true);
-            logger.info("error");
+           // logger.info("error");
         }
-        return "/company/details";
+        return "company/details";
     }
 
     @GetMapping(value = "/create")

@@ -56,6 +56,6 @@ public class Transaction extends BaseEntity{
      * Если бонус начислялся,то int>0.
      * Еслс бонус списывался, то int<0.
      */
-    @Column(name = "amount")
-    private int amount;
+    @Column(name = "amount_bonus")
+    private int amountBonus;
 }

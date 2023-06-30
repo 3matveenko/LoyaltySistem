@@ -31,16 +31,22 @@ public class CardItemService {
     }
 
     public Long createCardItemId(Long cardId, Long customerId) throws NotFoundException {
-        Optional<Company> company = companyService.getCompanyByCardId(cardId);
-        CardItem cardItem = new CardItem();
-        cardItem.setCard(cardService.findByid(cardId));
-        company.ifPresent(cardItem::setCompany);
-        cardItemRepository.save(cardItem);
-        Customer customer = customerService.findCustomerById(customerId);
-        List<CardItem> cardItems = customer.getCardItems();
-        cardItems.add(cardItem);
-        customerService.saveCustomer(customer);
-        return cardItem.getId();
-    }
+        try {
+            Optional<Company> company = companyService.getCompanyByCardId(cardId);
+            Customer customer = customerService.findCustomerById(customerId);
+            CardItem cardItem = new CardItem();
+            cardItem.setCard(cardService.findByid(cardId));
+            cardItem.setCustomer(customer);
+            company.ifPresent(cardItem::setCompany);
+            cardItemRepository.save(cardItem);
+            List<CardItem> cardItems = customer.getCardItems();
+            cardItems.add(cardItem);
+            customer.setCardItems(cardItems);
+            customerService.saveCustomer(customer);
+            return cardItem.getId();
+        } catch (Exception e) {
+            throw new NotFoundException("not found cardId");
+        }
 
+    }
 }

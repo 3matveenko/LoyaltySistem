@@ -15,4 +15,6 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 
     @Query("SELECT c FROM Company c JOIN c.cards card WHERE card.id = :cardId")
     Optional<Company> findByCardId(@Param("cardId") Long cardId);
+
+    Optional<Company> findCompanyByToken(String token);
 }

@@ -1,5 +1,6 @@
 package Novoe.LoyaltySystem.service;
 
+import Novoe.LoyaltySystem.exception.ForbiddenException;
 import Novoe.LoyaltySystem.model.Card;
 import Novoe.LoyaltySystem.model.Company;
 import Novoe.LoyaltySystem.repository.CompanyRepository;
@@ -75,5 +76,13 @@ public class CompanyService {
      */
     public Optional<Company> getCompanyByCardId(Long cardId){
        return companyRepository.findByCardId(cardId);
+    }
+
+    public Company getCompanyByToken(String token) throws ForbiddenException {
+        Optional<Company> company = companyRepository.findCompanyByToken(token);
+        if(company.isPresent()){
+            return company.get();
+        }
+        throw new ForbiddenException("Invalid token");
     }
 }

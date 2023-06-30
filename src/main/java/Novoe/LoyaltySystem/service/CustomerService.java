@@ -1,5 +1,7 @@
 package Novoe.LoyaltySystem.service;
 
+import Novoe.LoyaltySystem.exception.ForbiddenException;
+import Novoe.LoyaltySystem.model.CardItem;
 import Novoe.LoyaltySystem.model.Company;
 import Novoe.LoyaltySystem.model.Customer;
 import Novoe.LoyaltySystem.repository.CustomerRepository;
@@ -79,12 +81,24 @@ public class CustomerService {
         customerRepository.save(customer);
     }
 
-    public Long getUserIdByToken(String token) throws NotFoundException{
+    public Long getUserIdByToken(String token) throws ForbiddenException {
         Optional<Customer> customer = customerRepository.findCustomerByToken(token);
        if(customer.isPresent()){
           return customer.get().getId();
        } else {
-           throw new NotFoundException("not found");
+           throw new ForbiddenException("Forbidden");
        }
+    }
+
+    /**
+     * метод проверяет не привязана ли карта с таким шаблоном к этому клиенту
+     */
+    public boolean findCardByCustomerId(Long cardId, Long customerId){
+        for (CardItem carditem: findCustomerById(customerId).getCardItems()) {
+            if(carditem.getCard().getId()==cardId){
+                return false;
+            }
+        }
+        return true;
     }
 }

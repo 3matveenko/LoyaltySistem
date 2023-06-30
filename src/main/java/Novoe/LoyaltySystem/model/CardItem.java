@@ -29,4 +29,6 @@ public class CardItem extends BaseEntity{
     @OneToOne
     private Company company;
 
+    @OneToOne
+    private Customer customer;
 }
