@@ -21,7 +21,7 @@ import java.util.Date;
 public class Transaction extends BaseEntity{
 
     /**
-     * Время транзакции
+     * Дата/время транзакции
      */
     @Column(name ="date")
     private Date date;
