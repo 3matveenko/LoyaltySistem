@@ -6,11 +6,9 @@ import Novoe.LoyaltySystem.service.ApiService;
 import Novoe.LoyaltySystem.service.CompanyService;
 import Novoe.LoyaltySystem.service.TransactionService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,21 +32,18 @@ public class CrmRestController {
     @ApiResponse(responseCode = "200", description = "Успешная регистрация")
     @ApiResponse(responseCode = "403", description = "Не верный токен.")
     @PostMapping("/transaction")
-    public ResponseEntity<JSONObject> response(
+    public ResponseEntity<String> response(
             @RequestHeader("Authorization") String token,
-            @RequestBody String transaction) throws Exception {
+            @RequestBody String transaction){
         try {
            Company company = companyService.getCompanyByToken(token);
             return  ResponseEntity.ok(transactionService.makeTransaktion(transaction));
 
         } catch (ForbiddenException e){
-            System.out.println("d");
-            return ResponseEntity.ok(transactionService.makeTransaktion(transaction));
+            return ResponseEntity.status(403).body("Invalid token");
         } catch (JsonProcessingException e) {
-            System.out.println("g");
             throw new RuntimeException(e);
         } catch (Exception e) {
-            System.out.println("k");
             throw new RuntimeException(e);
         }
     }
