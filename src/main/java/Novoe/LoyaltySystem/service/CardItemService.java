@@ -30,6 +30,10 @@ public class CardItemService {
         return cardItemRepository.findAll();
     }
 
+    public Optional<CardItem> getCardItemById(Long cardItemId){
+        return cardItemRepository.findById(cardItemId);
+    }
+
     public Long createCardItemId(Long cardId, Long customerId) throws NotFoundException {
         try {
             Optional<Company> company = companyService.getCompanyByCardId(cardId);

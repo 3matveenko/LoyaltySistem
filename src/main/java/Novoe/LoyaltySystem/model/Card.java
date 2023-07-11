@@ -46,7 +46,7 @@ public class Card extends BaseEntity{
     /**
      * Тип скидки
      */
-    @Column(name = "type_of_discount")
+    @Column(name = "type_of_discount", columnDefinition = "text")
     private String typeOfDiscount;
 
 

@@ -37,7 +37,7 @@ public class CrmRestController {
             @RequestBody String transaction){
         try {
            Company company = companyService.getCompanyByToken(token);
-            return  ResponseEntity.ok(transactionService.makeTransaktion(transaction));
+            return  ResponseEntity.ok(transactionService.makeTransaktion(transaction,company));
 
         } catch (ForbiddenException e){
             return ResponseEntity.status(403).body("Invalid token");

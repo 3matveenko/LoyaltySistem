@@ -98,6 +98,8 @@ public class AppRestController {
                 return ResponseEntity.status(403).body("Invalid token");
         } catch (NotFoundException e) {
                 return ResponseEntity.status(460).body("Invalid id");
+        } catch (ArithmeticException e) {
+            return ResponseEntity.status(461).body("Ошибка вычислений");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Server exception");
         }

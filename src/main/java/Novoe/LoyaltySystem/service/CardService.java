@@ -42,6 +42,7 @@ public class CardService {
         return company.getCards().size();
     }
 
+
     public String createCard(MultipartFile file, String name, String typeOfDiscount,Long idCompany, long idTypeofCard) throws IOException{
         String imagename = UUID.randomUUID().toString();
         String fileName = imagename+".jpeg";

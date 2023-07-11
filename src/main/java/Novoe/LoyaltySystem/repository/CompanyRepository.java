@@ -13,6 +13,7 @@ import java.util.Optional;
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Long> {
 
+    //проверить
     @Query("SELECT c FROM Company c JOIN c.cards card WHERE card.id = :cardId")
     Optional<Company> findByCardId(@Param("cardId") Long cardId);
 
