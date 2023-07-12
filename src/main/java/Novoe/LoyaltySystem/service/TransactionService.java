@@ -35,7 +35,7 @@ public class TransactionService {
     @Autowired
     CompanyService companyService;
 
-    public String makeTransaktion(String jsonText, Company company) throws ArithmeticException, JsonProcessingException, BonusException {
+    public String makeTransaktion(String jsonText, Company company,Boolean parameter) throws ArithmeticException, JsonProcessingException, BonusException {
         //пропускать неизв поля
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -56,15 +56,21 @@ public class TransactionService {
         double bonusAmount = 0;
         double moneyAmount = 0;
         String formula;
-        if(orderBonus==0){
-            bonusAmount = 0;
-            formula = cardItem.getCard().getTypeOfDiscount();
-        } else if (orderBonus > 0) {
-            bonusAmount = orderBonus;
-            formula = "for (A l: lin) {l.amount = l.amount - (b.bonusAmount/lin.size());l.price = l.amount/l.count;} b.bonusAmount = b.bonusAmount*-1;";
+        if(parameter){
+            if(orderBonus==0){
+                bonusAmount = 0;
+                formula = cardItem.getCard().getTypeOfDiscount();
+            } else if (orderBonus > 0) {
+                bonusAmount = orderBonus;
+                formula = "for (A l: lin) {l.amount = l.amount - (b.bonusAmount/lin.size());l.price = l.amount/l.count;} b.bonusAmount = b.bonusAmount*-1;";
+            } else {
+                throw new BonusException("bonus exception");
+            }
         } else {
-            throw new BonusException("bonus exception");
+            formula = jsonNode.get("code").toString().substring(1,(jsonNode.get("code").toString().length()-1));
+            System.out.println(formula);
         }
+
         String line1 = """
                 import java.util.ArrayList;
                 import java.util.List;
@@ -83,12 +89,11 @@ public class TransactionService {
                 + "\nB b = new B("+bonusAmount+","+moneyAmount+","+countOrder+");\n" +
                 everyone+"\n"+
                 """
-                System.out.println("line1");
-                System.out.println("line2");
                 //код обработки \n
                 """
                 + formula +
                 """
+                \n
                 //код обработки
                 String json = "";
                 for (A l: lin) {json += "{\\"amount\\":"+(l.price * l.count)+",\\"price\\":"+l.price+",\\"name\\":\\""+l.name+"\\",\\"count\\":"+l.count+"},";b.moneyAmount  += l.amount;}                    
@@ -96,7 +101,6 @@ public class TransactionService {
                 String bonusAmount = Double.toString(b.bonusAmount);
                 String moneyAmount = Double.toString(b.moneyAmount);
                 String countOrder = Double.toString(b.countOrder); 
-                System.out.println("line3");                
                 """;
             System.out.println(line1);
         String resp = "";
@@ -117,6 +121,9 @@ public class TransactionService {
                 switch (ps.name()) {
                     case "result":
                         resp = StringEscapeUtils.unescapeJava(jShell.varValue(varSnippet));
+                        if(resp.indexOf("Infinity")>0){
+                            throw new ArithmeticException();
+                        }
                         break;
                     case "bonusAmount":
                         String stringBonusAmount = jShell.varValue(varSnippet).replace("\"", "");
@@ -131,15 +138,17 @@ public class TransactionService {
         }
         resp = resp.substring(1, resp.length()-1);
         if (resp.length() > 0) {
-            Transaction transaction = new Transaction();
-            transaction.setDate(new Date());
-            transaction.setCompany(company);
-            transaction.setCardItem(cardItem);
-            transaction.setOrderIn(jsonText);
-            transaction.setMoneyAmount(moneyAmount);
-            transaction.setBonusAmount(bonusAmount);
-            transaction.setOrderOut(resp);
-            transactionRepository.save(transaction);
+            if (parameter) {
+                Transaction transaction = new Transaction();
+                transaction.setDate(new Date());
+                transaction.setCompany(company);
+                transaction.setCardItem(cardItem);
+                transaction.setOrderIn(jsonText);
+                transaction.setMoneyAmount(moneyAmount);
+                transaction.setBonusAmount(bonusAmount);
+                transaction.setOrderOut(resp);
+                transactionRepository.save(transaction);
+            }
         }
             return resp;
         } else {

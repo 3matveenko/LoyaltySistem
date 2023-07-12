@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,6 +38,7 @@ public class SecurityConfig {
 
 
         http.formLogin()
+
                 .loginPage("/login")
                 .failureUrl("/login?error")
                 .defaultSuccessUrl("/")
@@ -48,19 +50,9 @@ public class SecurityConfig {
                 .logoutUrl("/exit")
                 .logoutSuccessUrl("/login");
 
-        http
-                .securityMatchers((matchers) -> matchers
-                        .requestMatchers(
-                                "/app",
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/api/v1/auth/**",
-                                "/v3/api-docs/**",
-                                "/v3/api-docs.yaml",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html")
-                                                        );
+        http.csrf().disable().authorizeHttpRequests().anyRequest().permitAll();
 
         return http.build();
     }
+
 }

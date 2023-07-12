@@ -31,13 +31,17 @@ public class CrmRestController {
     @Operation(summary = "Обрабатывает транзакцию", description = "")
     @ApiResponse(responseCode = "200", description = "Успешная регистрация")
     @ApiResponse(responseCode = "403", description = "Не верный токен.")
-    @PostMapping("/transaction")
+    @PostMapping(value = { "/transaction","/transaction/{parameter}" })
     public ResponseEntity<String> response(
+            @PathVariable(required = false) Boolean parameter,
             @RequestHeader("Authorization") String token,
             @RequestBody String transaction){
         try {
+            if(parameter==null){
+                parameter=true;
+            }
            Company company = companyService.getCompanyByToken(token);
-            return  ResponseEntity.ok(transactionService.makeTransaktion(transaction,company));
+            return  ResponseEntity.ok(transactionService.makeTransaktion(transaction,company,parameter));
 
         } catch (ForbiddenException e){
             return ResponseEntity.status(403).body("Invalid token");

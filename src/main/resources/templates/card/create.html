@@ -16,9 +16,9 @@
                             <input  name="name" type="text" class="form-control" id="exampleInputname" required>
                         </div>
                         <div class="form-group">
-                            <label for="typeOfDiscount">Формула рассчета</label>
-                            <textarea name="typeOfDiscount" type="text" class="form-control" id="typeOfDiscount" placeholder="" >
-                            </textarea>
+                            <label for="codeInput">Формула рассчета</label>
+                            <textarea id="codeInput" name="typeOfDiscount" type="text" class="form-control"></textarea>
+                            <div id="responseDiv"></div>
 
                         </div>
 
@@ -44,11 +44,57 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">Создать</button>
+                    <button id="checkButton" type="button" class="btn btn-primary">Проверить код</button>
+                    <button id="createButton" type="submit" class="btn btn-primary">Создать</button>
                 </div>
             </form>
         </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Скрыть кнопку "Создать" при загрузке страницы
+            $("#createButton").hide();
+
+            // Обработчик события для кнопки "Проверить код"
+            $("#checkButton").click(function() {
+                var url = "http://localhost:8080/crm/transaction/0";
+                var codeValue = $("#codeInput").val();
+                var requestBody = {
+                    "card_id": "1",
+                    "id": "MB192430",
+                    "bonus": 0,
+                    "code": codeValue,
+                    "items": [
+                        {"name": "шаровая1", "count": 1.0, "price": 100, "amount": 100},
+                        {"name": "шаровая2", "count": 2.0, "price": 200, "amount": 400},
+                        {"name": "шаровая3", "count": 3.0, "price": 300, "amount": 900}
+                    ]
+                };
+                var headers = {
+                    "Authorization": "853dc021-801d-4ed1-9e60-2ef398de9a57",
+                    "Content-Type": "application/json"
+                };
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify(requestBody),
+                    headers: headers,
+                    success: function(response) {
+                        // Показать кнопку "Создать" после успешного ответа от сервера
+                        $("#createButton").show();
+                        // Вывести ответ от сервера в div под полем ввода
+                        $("#responseDiv").text("Ответ от сервера: " + JSON.stringify(response));
+                    },
+                    error: function(xhr, status, error) {
+                        // Вывести сообщение об ошибке в div под полем ввода
+                        $("#responseDiv").text("Ошибка: " + error);
+                    }
+                });
+            });
+        });
+    </script>
     <script>
         function showPreview(event) {
             var input = event.target;
